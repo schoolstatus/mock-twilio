@@ -18,8 +18,11 @@ gem install mock-twilio
 ```
 
 ## Requirements
+- [Twilio OAI](https://github.com/twilio/twilio-oai) and [More Info](https://www.twilio.com/en-us/blog/introducing-twilios-openapi-specification-ga)
 
-- `docker compose up twilio_mock_server`
+OR
+
+- `docker compose up twilio_mock_server` [SS Twilio Mock Server](https://github.com/schoolstatus/twilio_mock_server)
 
 ## Defaults Prism
 
@@ -27,6 +30,17 @@ gem install mock-twilio
 - `proxy_port = 4010`
 - `proxy_protocol = http`
 
+## How to use
+
+```ruby
+export TWILIO_ACCOUNT_SID=ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+export TWILIO_API_KEY=SKXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+export TWILIO_API_SECRET=ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+mock_client = Mock::Twilio::Client.new
+client = Twilio::REST::Client.new(nil, nil, nil, nil, mock_client)
+client.messages.create(to: "+593978613041", body: "RB This is the ship that made the Kesssssel Run in fourteen parsecs?", from: "+13212855389")
+```
 
 ## Swagger - OpenApi Issues
 
