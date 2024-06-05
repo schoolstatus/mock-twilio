@@ -31,7 +31,18 @@ OR
 - `proxy_protocol = http`
 
 ## How to use
+Initializer sample
+```ruby
+Mock::Twilio.configure do |config|
+  config.host = "http://shunkan-ido-service"
+  config.forwarded_host = "finally-handy-vulture.ngrok-free.app"
+  config.port = "3000"
+  config.proto = "http"
+end
 
+```
+
+Example
 ```ruby
 export TWILIO_ACCOUNT_SID=ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 export TWILIO_API_KEY=SKXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

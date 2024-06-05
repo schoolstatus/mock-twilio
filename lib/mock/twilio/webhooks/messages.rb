@@ -10,13 +10,13 @@ module Mock
           # Wait simulation from twilio
           sleep DELAY.sample
 
-          request_url = PROTO + "://" + FORWARDED_HOST + URL
+          request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
           data = { :test=>'test' }
 
           signature = build_signature_for_request(request_url, data)
 
-          webhook_client.request(HOST,
-                                 PORT,
+          webhook_client.request(Mock::Twilio.host,
+                                 Mock::Twilio.port,
                                  'POST',
                                  URL,
                                  nil,

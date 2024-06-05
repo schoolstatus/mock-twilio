@@ -4,10 +4,6 @@ module Mock
   module Twilio
     module Webhooks
       class Base
-        HOST = "http://shunkan-ido-service"
-        FORWARDED_HOST = "finally-handy-vulture.ngrok-free.app"
-        PORT = "3000"
-        PROTO = "http"
         DELAY = [0.5, 0.8]
 
         def self.build_signature_for_request(request_url, params)
@@ -29,8 +25,8 @@ module Mock
 
         def self.headers
           {
-            'X-Forwarded-Proto': PROTO,
-            'Host': FORWARDED_HOST
+            'X-Forwarded-Proto': Mock::Twilio.proto,
+            'Host': Mock::Twilio.forwarded_host
           }
         end
       end
