@@ -19,15 +19,16 @@ module Mock
             "uri"
           ].freeze
 
-          def decorate(body)
+          def decorate(body, request)
             body["date_updated"] = Time.current.rfc2822 if body["date_updated"]
             body["date_sent"] = Time.current.rfc2822 if body["date_sent"]
             body["date_created"] = Time.current.rfc2822 if body["date_created"]
             body["start_time"] = Time.current.rfc2822 if body["start_time"]
             body["end_time"] = Time.current.rfc2822 if body["end_time"]
-            body["sid"] = "SMtesting" if body["sid"]
 
+            message_type(body, request) if body["sid"]
             pagination(body) if body["available_phone_numbers"]
+
             body
           end
 
@@ -37,6 +38,11 @@ module Mock
             PAGES_KEYS.each do |key|
               body.delete(key) if body[key]
             end
+          end
+
+          def message_type(body, request)
+            sid = request.data["MediaUrl"] ? "MMtesting" : "SMtesting"
+            body["sid"] = sid
           end
         end
       end

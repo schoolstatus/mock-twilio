@@ -13,7 +13,7 @@ module Mock
           body = JSON.parse(body)
           schema = url_from(body, request)
           # return body decorataor if needed
-          return ENDPOINTS[schema].decorate(body) if schema
+          return ENDPOINTS[schema].decorate(body, request) if schema
 
           body
         end
