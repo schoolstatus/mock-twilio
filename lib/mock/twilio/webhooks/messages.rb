@@ -11,7 +11,8 @@ module Mock
           sleep DELAY.sample
 
           request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
-          data = { :test=>'test' }
+
+          data = { :MessageSid=>"SMtesting", :MessageStatus=>"delivered" }
 
           signature = build_signature_for_request(request_url, data)
 

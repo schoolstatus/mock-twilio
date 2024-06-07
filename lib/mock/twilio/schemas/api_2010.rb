@@ -25,6 +25,7 @@ module Mock
             body["date_created"] = Time.current.rfc2822 if body["date_created"]
             body["start_time"] = Time.current.rfc2822 if body["start_time"]
             body["end_time"] = Time.current.rfc2822 if body["end_time"]
+            body["sid"] = "SMtesting" if body["sid"]
 
             pagination(body) if body["available_phone_numbers"]
             body
