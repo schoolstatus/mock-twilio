@@ -3,6 +3,8 @@
 module Mock
   module Twilio
     module Webhooks
+      class RestError < StandardError
+      end
       class Base
         DELAY = [0.5, 0.8]
 

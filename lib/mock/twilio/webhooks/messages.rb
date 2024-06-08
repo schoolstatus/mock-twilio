@@ -16,15 +16,21 @@ module Mock
 
           signature = build_signature_for_request(request_url, data)
 
-          webhook_client.request(Mock::Twilio.host,
-                                 Mock::Twilio.port,
-                                 'POST',
-                                 URL,
-                                 nil,
-                                 data,
-                                 headers.merge!({ 'X-Twilio-Signature': signature }),
-                                 auth_twilio,
-                                 nil)
+          response = webhook_client.request(Mock::Twilio.host,
+                                            Mock::Twilio.port,
+                                            'POST',
+                                            URL,
+                                            nil,
+                                            data,
+                                            headers.merge!({ 'X-Twilio-Signature': signature }),
+                                            auth_twilio,
+                                            nil)
+          case response.status
+          when 200..204
+            response
+          when 400..600
+            raise Webhooks::RestError, response.body
+          end
         end
       end
     end
