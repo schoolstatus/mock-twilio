@@ -11,8 +11,14 @@ module Mock
       class << self
         def call(body, request)
           body = JSON.parse(body)
+
+          case body["status"]
+          when 400..600
+            return body
+          end
+
           schema = url_from(body, request)
-          # return body decorataor if needed
+          # return body decorate if needed
           return ENDPOINTS[schema].decorate(body, request) if schema
 
           body
