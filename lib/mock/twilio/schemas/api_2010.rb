@@ -26,7 +26,7 @@ module Mock
             body["start_time"] = Time.current.rfc2822 if body["start_time"]
             body["end_time"] = Time.current.rfc2822 if body["end_time"]
 
-            message_type(body, request) if body["sid"]
+            message_sid(body, request) if body["sid"]
             pagination(body) if body["available_phone_numbers"]
 
             body
@@ -40,8 +40,13 @@ module Mock
             end
           end
 
-          def message_type(body, request)
-            sid = request.data["MediaUrl"] ? "MMtesting" : "SMtesting"
+          def message_sid(body, request)
+            prefix = request.data["MediaUrl"] ? "MM" : "SM"
+            sid = prefix + SecureRandom.hex(16)
+            scheduler = Rufus::Scheduler.new
+            scheduler.in '2s' do
+              Mock::Twilio::Webhooks::Messages.trigger(sid)
+            end
             body["sid"] = sid
           end
         end

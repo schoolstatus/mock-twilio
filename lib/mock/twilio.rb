@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "rufus-scheduler"
 require_relative "twilio/middleware/proxy"
 require_relative "twilio/schemas/api_2010"
 require_relative "twilio/schemas/messaging_v1"
