@@ -7,7 +7,7 @@ module Mock
     # client.messages.create(to: "+593978613041", body: "RB This is the ship that made the Kesssssel Run in fourteen parsecs?", from: "+13212855389")
     class Client
       attr_accessor :adapter
-      attr_reader :timeout, :last_response, :last_request
+      attr_reader :timeout, :last_response, :last_request, :proxy_addr, :proxy_port, :proxy_prot
 
       def initialize(proxy_prot = nil, proxy_addr = nil, proxy_port = nil, timeout: nil)
         @proxy_prot = proxy_prot || 'http'

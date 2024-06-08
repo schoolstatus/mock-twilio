@@ -32,6 +32,8 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "faraday", "~> 2.7"
   spec.add_dependency "rufus-scheduler"
+  spec.add_dependency "twilio-ruby"
+  spec.add_dependency "activesupport"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

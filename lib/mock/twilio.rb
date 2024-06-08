@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "rufus-scheduler"
+require "active_support"
+require "active_support/core_ext/time"
 require_relative "twilio/middleware/proxy"
 require_relative "twilio/schemas/api_2010"
 require_relative "twilio/schemas/messaging_v1"

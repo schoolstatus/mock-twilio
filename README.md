@@ -53,6 +53,11 @@ client = Twilio::REST::Client.new(nil, nil, nil, nil, mock_client)
 client.messages.create(to: "+593978613041", body: "RB This is the ship that made the Kesssssel Run in fourteen parsecs?", from: "+13212855389")
 ```
 
+## Run tests
+```unix
+ruby -Ilib:test test/mock/*
+```
+
 ## Swagger - OpenApi Issues
 
 - Array and Boolean validations due open api formats, ie params as `status_callback_event`, `early_media`. Validations removed for them on json files.
