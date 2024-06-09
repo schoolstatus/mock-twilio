@@ -5,16 +5,10 @@ This is a SchoolStatus implementation to mock twilio client to perform requests 
 
 # Installation
 
-To install using [Bundler][bundler] grab the latest stable version:
+To install using bundler grab the latest stable version:
 
 ```ruby
-gem 'mock-twilio', '~> 0.1.0'
-```
-
-To manually install `twilio-ruby` via [Rubygems][rubygems] simply gem install:
-
-```bash
-gem install mock-twilio
+gem "mock-twilio", "~> 0.1.0", git: "https://github.com/schoolstatus/mock-twilio.git"
 ```
 
 ## Requirements
@@ -35,7 +29,7 @@ Initializer sample
 ```ruby
 Mock::Twilio.configure do |config|
   config.host = "http://shunkan-ido-service"
-  config.forwarded_host = "finally-handy-vulture.ngrok-free.app"
+  config.forwarded_host = "shunkan-ido-service"
   config.port = "3000"
   config.proto = "http"
 end
@@ -55,7 +49,7 @@ client.messages.create(to: "+593978613041", body: "RB This is the ship that made
 
 ## Run tests
 ```unix
-ruby -Ilib:test test/mock/*
+rake test
 ```
 
 ## Swagger - OpenApi Issues
