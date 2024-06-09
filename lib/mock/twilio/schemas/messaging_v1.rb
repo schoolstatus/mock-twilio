@@ -5,7 +5,7 @@ module Mock
     module Schemas
       class MessagingV1
         class << self
-          def decorate(body)
+          def decorate(body, request)
             # Params for twilio pagination, needed for twilio-ruby serializers and absolute paths
             body["meta"]["key"] = "phone_numbers" if body["meta"]
             body["meta"]["page_size"] = 20 if body["meta"]
