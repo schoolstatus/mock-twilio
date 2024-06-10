@@ -9,7 +9,7 @@ This is a SchoolStatus implementation to mock twilio client to perform requests 
 To install using bundler grab the latest stable version:
 
 ```ruby
-gem "mock-twilio"
+gem install mock-twilio
 ```
 
 ## Requirements
