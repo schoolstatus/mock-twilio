@@ -1,4 +1,5 @@
 ## Mock::Twilio::Client
+[![Gem Version](https://badge.fury.io/rb/mock-twilio.svg)](https://badge.fury.io/rb/mock-twilio)
 
 This is a SchoolStatus implementation to mock twilio client to perform requests to  [twilio-oai](https://github.com/twilio/twilio-oai)
 
@@ -8,7 +9,7 @@ This is a SchoolStatus implementation to mock twilio client to perform requests 
 To install using bundler grab the latest stable version:
 
 ```ruby
-gem "mock-twilio", "~> 0.2.0", git: "https://github.com/schoolstatus/mock-twilio.git"
+gem "mock-twilio"
 ```
 
 ## Requirements
