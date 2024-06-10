@@ -8,7 +8,7 @@ This is a SchoolStatus implementation to mock twilio client to perform requests 
 To install using bundler grab the latest stable version:
 
 ```ruby
-gem "mock-twilio", "~> 0.1.0", git: "https://github.com/schoolstatus/mock-twilio.git"
+gem "mock-twilio", "~> 0.2.0", git: "https://github.com/schoolstatus/mock-twilio.git"
 ```
 
 ## Requirements
