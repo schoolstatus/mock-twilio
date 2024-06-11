@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+require "simplecov"
+SimpleCov.command_name 'Unit Tests'
+SimpleCov.start do
+  add_filter '/test/'
+end
+
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require "mock/twilio"
 require "twilio-ruby"
