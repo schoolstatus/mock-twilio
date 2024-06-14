@@ -2,6 +2,7 @@
 
 require_relative "../decorators/api_2010/messages"
 require_relative "../decorators/api_2010/calls"
+require_relative "../decorators/api_2010/conferences_participants"
 
 module Mock
   module Twilio
@@ -11,6 +12,7 @@ module Mock
           RESOURCES = {
             messages: Mock::Twilio::Decorators::Api2010::Messages,
             calls: Mock::Twilio::Decorators::Api2010::Calls,
+            conferences_participants: Mock::Twilio::Decorators::Api2010::ConferencesParticipants,
           }
 
           PAGES_KEYS = [
@@ -35,6 +37,8 @@ module Mock
               RESOURCES[:messages].decorate(body, request)
             when %r{\/2010-04-01/Accounts/[A-Za-z0-9]+/Calls.json}
               RESOURCES[:calls].decorate(body, request)
+            when %r{\/2010-04-01/Accounts/[A-Za-z0-9]+/Conferences/[A-Za-z0-9]+/Participants/[A-Za-z0-9]+.json}
+              RESOURCES[:conferences_participants].decorate(body, request)
             end
           end
         end
