@@ -28,7 +28,16 @@ module Mock
               sid = prefix + SecureRandom.hex(16)
               scheduler = Rufus::Scheduler.new
               scheduler.in '2s' do
-                Mock::Twilio::Webhooks::Calls.trigger(sid)
+                conference_uuid = request.data["Url"].split("conference_uuid=").last
+                response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid)
+
+                conference_response = if response.status == 200
+                                        twiMl_xml = Nokogiri::XML response.body
+                                        friendly_name = twiMl_xml.at_xpath('//Dial').at_xpath('//Conference').children.text
+                                        Mock::Twilio::Webhooks::Conferences.trigger(friendly_name)
+                                      end
+
+                Mock::Twilio::Webhooks::Calls.trigger(sid) if conference_response.status == 200
               end
               body["sid"] = sid
             end

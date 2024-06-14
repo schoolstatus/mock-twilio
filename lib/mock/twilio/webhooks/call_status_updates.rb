@@ -3,16 +3,16 @@
 module Mock
   module Twilio
     module Webhooks
-      class Calls < Base
-        URL = "/api/v1/twilio_calls/participant_status_changes"
+      class CallStatusUpdates < Base
+        URL = "/api/v1/twilio_calls/voice_responses"
 
-        def self.trigger(sid)
+        def self.trigger(sid, conference_uuid)
           # Wait simulation from twilio
           sleep DELAY.sample
 
           request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
 
-          data = call_data(sid)
+          data = call_status_updates_data(sid, conference_uuid)
 
           signature = build_signature_for_request(request_url, data)
 
@@ -33,7 +33,7 @@ module Mock
           end
         end
 
-        def self.call_data(sid)
+        def self.call_status_updates_data(sid, conference_uuid)
           {
             :AccountSid=> twilio_client.account_sid,
             :ApiVersion=>	"2010-04-01",
@@ -65,7 +65,12 @@ module Mock
             :ToCity=> "TAMPA",
             :ToCountry=> "US",
             :ToState=> "FL",
-            :ToZip=> "33605"
+            :ToZip=> "33605",
+            :StirStatus=> "B",
+            :ToCountry=> "US",
+            :StirVerstat=> "TN-Validation-Passed-B",
+            :AnsweredBy=> "unknown",
+            :conference_uuid=> conference_uuid
           }
         end
       end
