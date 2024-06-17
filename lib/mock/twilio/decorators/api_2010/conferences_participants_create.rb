@@ -4,14 +4,14 @@ module Mock
   module Twilio
     module Decorators
       module Api2010
-        class ConferencesParticipants
+        class ConferencesParticipantsCreate
           class << self
             def decorate(body, request)
               body["date_updated"] = Time.current.rfc2822 if body["date_updated"]
               body["date_created"] = Time.current.rfc2822 if body["date_created"]
               body["account_sid"] = ::Twilio.account_sid if body["account_sid"]
               body["label"] = "Mock Customer" if body["label"]
-              body["status"] = "complete" if body["status"]
+              body["status"] = "initiated" if body["status"]
 
               parse_call_sid(body, request) if body["call_sid"]
               parse_conference_sid(body, request) if body["conference_sid"]
@@ -20,8 +20,8 @@ module Mock
             end
 
             def parse_call_sid(body, request)
-              uri = URI(request.url)
-              call_sid = uri.path.split('/')[7].split('.').first
+              prefix = "CA"
+              call_sid = prefix + SecureRandom.hex(16)
               body["call_sid"] = call_sid
             end
 
