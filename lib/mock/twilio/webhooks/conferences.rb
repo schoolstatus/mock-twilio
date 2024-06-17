@@ -42,7 +42,7 @@ module Mock
            :SequenceNumber=> "6",
            :ConferenceSid=> sid,
            :StatusCallbackEvent=> "conference-start",
-           :Timestamp=> Time.current,
+           :Timestamp=> "2024-06-17 16:49:31 UTC",
            :AccountSid=> twilio_client.account_sid,
            :Reason=> "Participant from mock twilio"
           }
