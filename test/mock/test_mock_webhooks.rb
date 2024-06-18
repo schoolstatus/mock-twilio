@@ -50,4 +50,51 @@ class Mock::TestTwilio < Minitest::Test
 
     assert_raises(Mock::Twilio::Webhooks::RestError) { Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING") }
   end
+
+  def test_mock_webhook_calls_trigger
+    stub_request(:post, "http://shunkan-ido-service:3000/api/v1/twilio_calls/participant_status_changes").
+      with(
+        body: {"AccountSid"=>"ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "ApiVersion"=>"2010-04-01", "CallDuration"=>"0", "CallSid"=>"SIDTESTING", "CallStatus"=>"in-progress", "CallbackSource"=>"call-progress-events", "Called"=>"+18222222222", "CalledCity"=>"TAMPA", "CalledCountry"=>"US", "CalledState"=>"FL", "CalledZip"=>"33605", "Caller"=>"+18111111111", "CallerCity"=>"no value", "CallerCountry"=>"US", "CallerState"=>"CA", "CallerZip"=>"no value", "Direction"=>"outbound-api", "Duration"=>"0", "From"=>"+18111111111", "FromCity"=>"no value", "FromCountry"=>"US", "FromState"=>"CA", "FromZip"=>"no value", "SequenceNumber"=>"2", "SipResponseCode"=>"487", "Timestamp"=>"2024-06-17 16:49:31 UTC", "To"=>"+18222222222", "ToCity"=>"TAMPA", "ToCountry"=>"US", "ToState"=>"FL", "ToZip"=>"33605"},
+        headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization'=>'Basic QUNGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRjpTS1hYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhY',
+          'Content-Type'=>'application/x-www-form-urlencoded',
+          'Host'=>'forwarded_host.app',
+          'User-Agent'=>'Faraday v2.9.1',
+          'X-Forwarded-Proto'=>'http',
+          'X-Twilio-Signature'=>'WxOk5XXhmUhA+ZcHe9XDfqn64cM='
+        }).
+        to_return(status: 200, body: "", headers: {})
+
+    response = Mock::Twilio::Webhooks::Calls.trigger("SIDTESTING")
+
+    assert "forwarded_host.app", response.env.request_headers['Host']
+    assert "http", response.env.request_headers['X-forwarded-proto']
+    assert "WNqVAu7AugB+SUKrULuBh6cyOKM=", response.env.request_headers['X-twilio-signature']
+    assert "MessageSid=SIDTESTING&MessageStatus=delivered", response.env.request_body
+  end
+
+  def test_mock_webhook_calls_updates_trigger
+    stub_request(:post, "http://shunkan-ido-service:3000/api/v1/twilio_calls/voice_responses").
+      with(
+        body: {"AccountSid"=>"ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "AnsweredBy"=>"unknown", "ApiVersion"=>"2010-04-01", "CallDuration"=>"0", "CallSid"=>"SIDTESTING", "CallStatus"=>"in-progress", "CallbackSource"=>"call-progress-events", "Called"=>"+18222222222", "CalledCity"=>"TAMPA", "CalledCountry"=>"US", "CalledState"=>"FL", "CalledZip"=>"33605", "Caller"=>"+18111111111", "CallerCity"=>"no value", "CallerCountry"=>"US", "CallerState"=>"CA", "CallerZip"=>"no value", "Direction"=>"outbound-api", "Duration"=>"0", "From"=>"+18111111111", "FromCity"=>"no value", "FromCountry"=>"US", "FromState"=>"CA", "FromZip"=>"no value", "SequenceNumber"=>"2", "SipResponseCode"=>"487", "StirStatus"=>"B", "StirVerstat"=>"TN-Validation-Passed-B", "Timestamp"=>"2024-06-17 16:49:31 UTC", "To"=>"+18222222222", "ToCity"=>"TAMPA", "ToCountry"=>"US", "ToState"=>"FL", "ToZip"=>"33605", "conference_uuid"=>"123abc"},
+        headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization'=>'Basic QUNGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRjpTS1hYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhY',
+          'Content-Type'=>'application/x-www-form-urlencoded',
+          'Host'=>'forwarded_host.app',
+          'User-Agent'=>'Faraday v2.9.1',
+          'X-Forwarded-Proto'=>'http',
+          'X-Twilio-Signature'=>'JoekcINsRy7QO03Lh82N3F5KQUg='
+        }).
+        to_return(status: 200, body: "", headers: {})
+
+    response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger("SIDTESTING","123abc")
+
+    assert "forwarded_host.app", response.env.request_headers['Host']
+    assert "http", response.env.request_headers['X-forwarded-proto']
+    assert "WNqVAu7AugB+SUKrULuBh6cyOKM=", response.env.request_headers['X-twilio-signature']
+  end
 end

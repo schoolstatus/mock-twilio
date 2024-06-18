@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "schemas/api_2010"
+require_relative "schemas/messaging_v1"
+
 module Mock
   module Twilio
     class Decorator
@@ -19,7 +22,7 @@ module Mock
 
           schema = url_from(body, request)
           # return body decorate if needed
-          return ENDPOINTS[schema].decorate(body, request) if schema
+          return ENDPOINTS[schema].for(body, request) if schema
 
           body
         end
