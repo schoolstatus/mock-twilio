@@ -1,5 +1,6 @@
 ## Mock::Twilio::Client
 [![Gem Version](https://badge.fury.io/rb/mock-twilio.svg)](https://badge.fury.io/rb/mock-twilio)
+![mock-twilio](https://github.com/schoolstatus/mock-twilio/actions/workflows/ruby.yml/badge.svg)
 
 This is a SchoolStatus implementation to mock twilio client to perform requests to  [twilio-oai](https://github.com/twilio/twilio-oai)
 
