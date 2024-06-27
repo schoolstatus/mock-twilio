@@ -27,6 +27,7 @@ module Mock
               scheduler.in '2s' do
                 Mock::Twilio::Webhooks::CustomerProfiles.trigger(sid, request.data["StatusCallback"])
               end
+              body["sid"] = sid
             end
           end
         end
