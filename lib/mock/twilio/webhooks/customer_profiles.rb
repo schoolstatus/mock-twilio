@@ -4,13 +4,15 @@ module Mock
   module Twilio
     module Webhooks
       class CustomerProfiles < Base
-        def self.trigger(sid, status_callback)
+        URL = "/webhooks/twilio/customer_profiles_compliance"
+
+        def self.trigger(sid, status)
           # Wait simulation from twilio
           sleep DELAY.sample
 
-          request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + status_callback
+          request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
 
-          data = { :BundleSid=>sid, :Status=>"twilio-approved" }
+          data = { :BundleSid=>sid, :Status=>status }
 
           signature = build_signature_for_request(request_url, data)
 
