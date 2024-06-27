@@ -4,6 +4,7 @@ require_relative "schemas/api_2010"
 require_relative "schemas/messaging_v1"
 require_relative "schemas/customer_profiles_v1"
 require_relative "schemas/end_users_v1"
+require_relative "schemas/supporting_documents_v1"
 
 module Mock
   module Twilio
@@ -12,7 +13,8 @@ module Mock
         api_2010: Mock::Twilio::Schemas::Api2010,
         messaging_v1: Mock::Twilio::Schemas::MessagingV1,
         customer_profiles_v1: Mock::Twilio::Schemas::CustomerProfilesV1,
-        end_users_v1: Mock::Twilio::Schemas::EndUsersV1
+        end_users_v1: Mock::Twilio::Schemas::EndUsersV1,
+        supporting_documents_v1: Mock::Twilio::Schemas::SupportingDocumentsV1
       }
 
       class << self
@@ -43,6 +45,8 @@ module Mock
             :customer_profiles_v1
           when %r{\/v1/EndUsers}
             :end_users_v1
+          when %r{\/v1/SupportingDocuments}
+            :supporting_documents_v1
           end
         end
       end
