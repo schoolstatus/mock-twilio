@@ -21,10 +21,10 @@ class Mock::TestTwilio < Minitest::Test
 
     response = Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING")
 
-    assert "forwarded_host.app", response.env.request_headers['Host']
-    assert "http", response.env.request_headers['X-forwarded-proto']
-    assert "WNqVAu7AugB+SUKrULuBh6cyOKM=", response.env.request_headers['X-twilio-signature']
-    assert "MessageSid=SIDTESTING&MessageStatus=delivered", response.env.request_body
+    assert_equal "forwarded_host.app", response.env.request_headers['Host']
+    assert_equal "http", response.env.request_headers['X-forwarded-proto']
+    assert_equal "WNqVAu7AugB+SUKrULuBh6cyOKM=", response.env.request_headers['X-twilio-signature']
+    assert_equal "MessageSid=SIDTESTING&MessageStatus=delivered", response.env.request_body
   end
 
   def test_mock_webhook_message_trigger_error
@@ -69,10 +69,10 @@ class Mock::TestTwilio < Minitest::Test
 
     response = Mock::Twilio::Webhooks::Calls.trigger("SIDTESTING")
 
-    assert "forwarded_host.app", response.env.request_headers['Host']
-    assert "http", response.env.request_headers['X-forwarded-proto']
-    assert "WNqVAu7AugB+SUKrULuBh6cyOKM=", response.env.request_headers['X-twilio-signature']
-    assert "MessageSid=SIDTESTING&MessageStatus=delivered", response.env.request_body
+    assert_equal "forwarded_host.app", response.env.request_headers['Host']
+    assert_equal "http", response.env.request_headers['X-forwarded-proto']
+    assert_equal "WxOk5XXhmUhA+ZcHe9XDfqn64cM=", response.env.request_headers['X-twilio-signature']
+    assert response.env.request_body.include?("in-progress")
   end
 
   def test_mock_webhook_calls_updates_trigger
@@ -93,8 +93,31 @@ class Mock::TestTwilio < Minitest::Test
 
     response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger("SIDTESTING","123abc")
 
-    assert "forwarded_host.app", response.env.request_headers['Host']
-    assert "http", response.env.request_headers['X-forwarded-proto']
-    assert "WNqVAu7AugB+SUKrULuBh6cyOKM=", response.env.request_headers['X-twilio-signature']
+    assert_equal "forwarded_host.app", response.env.request_headers['Host']
+    assert_equal "http", response.env.request_headers['X-forwarded-proto']
+    assert_equal "JoekcINsRy7QO03Lh82N3F5KQUg=", response.env.request_headers['X-twilio-signature']
+  end
+
+  def test_mock_webhook_customer_profile_trigger
+    stub_request(:post, "http://shunkan-ido-service:3000/webhooks/twilio/customer_profiles_compliance").
+      with(
+        body: {"BundleSid"=>"SIDTESTING", "Status"=>"in-review"},
+        headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization'=>'Basic QUNGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRjpTS1hYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhY',
+          'Content-Type'=>'application/x-www-form-urlencoded',
+          'Host'=>'forwarded_host.app',
+          'User-Agent'=>'Faraday v2.9.1',
+          'X-Forwarded-Proto'=>'http',
+          'X-Twilio-Signature'=>'3/Xbee9zCe2IfVU8N6olgb3VBXg='
+        }).
+        to_return(status: 200, body: "", headers: {})
+
+    response = Mock::Twilio::Webhooks::CustomerProfiles.trigger("SIDTESTING", "in-review")
+
+    assert_equal "forwarded_host.app", response.env.request_headers['Host']
+    assert_equal "http", response.env.request_headers['X-forwarded-proto']
+    assert_equal "3/Xbee9zCe2IfVU8N6olgb3VBXg=", response.env.request_headers['X-twilio-signature']
   end
 end
