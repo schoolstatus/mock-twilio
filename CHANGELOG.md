@@ -1,3 +1,11 @@
+## [0.4.0] - 2024-07-01
+- Support CustomerProfiles, EntityAssignments, Evaluations
+- Support EndUsersV1
+- Support SupportingDocumentsV1
+- Support Addresses
+- Support Mock::Twilio::Webhooks::CustomerProfiles
+- Support LookupV2 line_type_intelligence
+
 ## [0.3.0] - 2024-06-24
 - Support Calls service
 - Support Conferences service
