@@ -1,3 +1,6 @@
+## [0.6.0] - 2024-07-01
+- Upgrade twilio-ruby 7.1.0
+
 ## [0.4.0] - 2024-07-01
 - Support CustomerProfiles, EntityAssignments, Evaluations
 - Support EndUsersV1
