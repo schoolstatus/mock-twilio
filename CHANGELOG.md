@@ -1,3 +1,6 @@
+## [0.7.1] - 2024-07-09
+- Override Twilio Messaging PhoneNumberList Limit
+
 ## [0.7.0] - 2024-07-09
 - Support MessagingServicesV1 phone_numbers
 
