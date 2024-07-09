@@ -1,4 +1,7 @@
-## [0.6.0] - 2024-07-01
+## [0.7.0] - 2024-07-09
+- Support MessagingServicesV1 phone_numbers
+
+## [0.6.0] - 2024-07-02
 - Upgrade twilio-ruby 7.1.0
 
 ## [0.4.0] - 2024-07-01
