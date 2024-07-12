@@ -1,3 +1,6 @@
+## [0.7.2] - 2024-07-11
+- Add PhoneNumberList default limit 1 only on Mock
+
 ## [0.7.1] - 2024-07-09
 - Override Twilio Messaging PhoneNumberList Limit
 
