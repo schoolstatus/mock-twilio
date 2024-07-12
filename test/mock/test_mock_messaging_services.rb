@@ -37,7 +37,7 @@ class Mock::TestTwilio < Minitest::Test
 
     mock_client = Mock::Twilio::Client.new
     client = ::Twilio::REST::Client.new(nil, nil, nil, nil, mock_client)
-    response = client.messaging.v1.services("MG"+"F"*32).phone_numbers.list(limit: 1)
+    response = client.messaging.v1.services("MG"+"F"*32).phone_numbers.list(limit: nil)
 
     assert_equal Time, response.first.date_created.class
     assert_equal Time, response.first.date_updated.class

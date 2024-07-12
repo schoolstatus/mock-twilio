@@ -9,7 +9,7 @@ module Mock
             phone_number_sid(body) if body["phone_numbers"].first["sid"]
             body["phone_numbers"].first["account_sid"] = ::Twilio.account_sid if body["phone_numbers"].first["account_sid"]
             parse_messaging_service_sid(body, request) if body["phone_numbers"].first["service_sid"]
-            body["phone_numbers"].first["phone_number"] = "987654321" if body["phone_numbers"].first["phone_number"]
+            body["phone_numbers"].first["phone_number"] = "+19876543210" if body["phone_numbers"].first["phone_number"]
             body["phone_numbers"].first["country_code"] = "US" if body["phone_numbers"].first["country_code"]
 
             # Params for twilio pagination, needed for twilio-ruby serializers and absolute paths
