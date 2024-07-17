@@ -26,10 +26,7 @@ module Mock
                 response = Mock::Twilio::Webhooks::CustomerProfiles.trigger(customer_profile_sid, "in-review")
 
                 if response.status == 200
-                  scheduler = Rufus::Scheduler.new
-                  scheduler.in '2s' do
-                    Mock::Twilio::Webhooks::CustomerProfiles.trigger(customer_profile_sid, "twilio-approved")
-                  end
+                  Mock::Twilio::Webhooks::CustomerProfiles.trigger(customer_profile_sid, "twilio-approved")
                 end
 
               end
