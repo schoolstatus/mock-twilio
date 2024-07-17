@@ -3,30 +3,28 @@
 module Mock
   module Twilio
     module Decorators
-      module CustomerProfilesV1
-        class CustomerProfile
+      module TrustProductsV1
+        class TrustProducts
           class << self
             def decorate(body, request)
               body["date_updated"] = Time.current.rfc2822 if body["date_updated"]
               body["date_created"] = Time.current.rfc2822 if body["date_created"]
-              customer_profile_sid(body, request) if body["sid"]
+
+              trust_product_sid(body) if body["sid"]
               body["account_sid"] = ::Twilio.account_sid if body["account_sid"]
+
               body["friendly_name"] = request.data["FriendlyName"] if body["friendly_name"]
-              body["email"] = request.data["Email"] if body["email"]
+              body["email"] = request.data["Email"] if body["email:"]
               body["policy_sid"] = request.data["PolicySid"] if body["policy_sid"]
-              body["status_callback"] = request.data["StatusCallback"] if body["status_callback"]
               body["status"] = "draft" if body["status"]
+              body["valid_until"] = nil if body["valid_until"]
 
               body
             end
 
-            def customer_profile_sid(body, request)
+            def trust_product_sid(body)
               prefix = "BU"
               sid = prefix + SecureRandom.hex(16)
-              scheduler = Rufus::Scheduler.new
-              #scheduler.in '2s' do
-                #Mock::Twilio::Webhooks::CustomerProfiles.trigger(sid, "in-review")
-              #end
               body["sid"] = sid
             end
           end

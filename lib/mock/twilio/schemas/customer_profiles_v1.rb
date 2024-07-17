@@ -3,6 +3,7 @@
 require_relative "../decorators/customer_profiles_v1/customer_profile"
 require_relative "../decorators/customer_profiles_v1/entity_assignments"
 require_relative "../decorators/customer_profiles_v1/evaluations"
+require_relative "../decorators/customer_profiles_v1/customer_profile_update"
 
 module Mock
   module Twilio
@@ -12,7 +13,8 @@ module Mock
           RESOURCES = {
             customer_profile: Mock::Twilio::Decorators::CustomerProfilesV1::CustomerProfile,
             entity_assigments: Mock::Twilio::Decorators::CustomerProfilesV1::EntityAssignments,
-            evaluations: Mock::Twilio::Decorators::CustomerProfilesV1::Evaluations
+            evaluations: Mock::Twilio::Decorators::CustomerProfilesV1::Evaluations,
+            customer_profile_update: Mock::Twilio::Decorators::CustomerProfilesV1::CustomerProfileUpdate,
           }
 
           def for(body, request)
@@ -25,6 +27,8 @@ module Mock
               RESOURCES[:entity_assigments].decorate(body, request)
             when %r{\/v1/CustomerProfiles/[A-Za-z0-9]+/Evaluations}
               RESOURCES[:evaluations].decorate(body, request)
+            when %r{\/v1/CustomerProfiles/[A-Za-z0-0]+}
+              RESOURCES[:customer_profile_update].decorate(body, request)
             end
           end
         end
