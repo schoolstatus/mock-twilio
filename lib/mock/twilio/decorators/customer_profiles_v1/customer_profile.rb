@@ -24,9 +24,6 @@ module Mock
               prefix = "BU"
               sid = prefix + SecureRandom.hex(16)
               scheduler = Rufus::Scheduler.new
-              #scheduler.in '2s' do
-                #Mock::Twilio::Webhooks::CustomerProfiles.trigger(sid, "in-review")
-              #end
               body["sid"] = sid
             end
           end
