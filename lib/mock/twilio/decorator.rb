@@ -7,6 +7,7 @@ require_relative "schemas/end_users_v1"
 require_relative "schemas/supporting_documents_v1"
 require_relative "schemas/phone_numbers_v2"
 require_relative "schemas/brands_registrations_a2p"
+require_relative "schemas/trust_products_v1"
 
 module Mock
   module Twilio
@@ -18,7 +19,8 @@ module Mock
         end_users_v1: Mock::Twilio::Schemas::EndUsersV1,
         supporting_documents_v1: Mock::Twilio::Schemas::SupportingDocumentsV1,
         phone_numbers_v2: Mock::Twilio::Schemas::PhoneNumbersV2,
-        brands_registrations_a2p: Mock::Twilio::Schemas::BrandsRegistrationsA2p
+        brands_registrations_a2p: Mock::Twilio::Schemas::BrandsRegistrationsA2p,
+        trust_products_v1: Mock::Twilio::Schemas::TrustProductsV1
       }
 
       class << self
@@ -55,6 +57,8 @@ module Mock
             :phone_numbers_v2
           when %r{\/v1/a2p/BrandRegistrations}
             :brands_registrations_a2p
+          when %r{\/v1/TrustProducts}
+            :trust_products_v1
           end
         end
       end
