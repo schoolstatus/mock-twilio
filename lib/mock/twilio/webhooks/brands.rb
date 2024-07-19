@@ -30,7 +30,7 @@ module Mock
           when 200..204
             response
           when 400..600
-            raise Webhooks::RestError, response.body
+            raise Webhooks::RestError, Mock::Twilio::ErrorHandler.new(response).raise
           end
         end
 

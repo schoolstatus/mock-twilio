@@ -23,7 +23,6 @@ module Mock
             def customer_profile_sid(body, request)
               prefix = "BU"
               sid = prefix + SecureRandom.hex(16)
-              scheduler = Rufus::Scheduler.new
               body["sid"] = sid
             end
           end
