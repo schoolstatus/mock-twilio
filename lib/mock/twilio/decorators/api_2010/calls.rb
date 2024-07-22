@@ -29,15 +29,19 @@ module Mock
               scheduler = Rufus::Scheduler.new
               scheduler.in '2s' do
                 conference_uuid = request.data["Url"].split("conference_uuid=").last
-                response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid)
+                begin
+                  response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid)
 
-                conference_response = if response.status == 200
-                                        twiMl_xml = Nokogiri::XML response.body
-                                        friendly_name = twiMl_xml.at_xpath('//Dial').at_xpath('//Conference').children.text
-                                        Mock::Twilio::Webhooks::Conferences.trigger(friendly_name)
-                                      end
+                  conference_response = if response.status == 200
+                                          twiMl_xml = Nokogiri::XML response.body
+                                          friendly_name = twiMl_xml.at_xpath('//Dial').at_xpath('//Conference').children.text
+                                          Mock::Twilio::Webhooks::Conferences.trigger(friendly_name)
+                                        end
 
-                Mock::Twilio::Webhooks::Calls.trigger(sid) if conference_response.status == 200
+                  Mock::Twilio::Webhooks::Calls.trigger(sid) if conference_response.status == 200
+                rescue  => e
+                  puts e
+                end
               end
               body["sid"] = sid
             end

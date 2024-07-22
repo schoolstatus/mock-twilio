@@ -23,12 +23,15 @@ module Mock
               customer_profile_sid = uri.path.split('/')[3].split('.').first
               scheduler = Rufus::Scheduler.new
               scheduler.in '2s' do
-                response = Mock::Twilio::Webhooks::CustomerProfiles.trigger(customer_profile_sid, "in-review")
+                begin
+                  response = Mock::Twilio::Webhooks::CustomerProfiles.trigger(customer_profile_sid, "in-review")
 
-                if response.status == 200
-                  Mock::Twilio::Webhooks::CustomerProfiles.trigger(customer_profile_sid, "twilio-approved")
+                  if response.status == 200
+                    Mock::Twilio::Webhooks::CustomerProfiles.trigger(customer_profile_sid, "twilio-approved")
+                  end
+                rescue => e
+                  puts e
                 end
-
               end
               body["sid"] = customer_profile_sid
             end

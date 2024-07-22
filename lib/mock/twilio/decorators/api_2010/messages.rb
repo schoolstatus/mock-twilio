@@ -32,7 +32,11 @@ module Mock
               sid = prefix + SecureRandom.hex(16)
               scheduler = Rufus::Scheduler.new
               scheduler.in '2s' do
-                Mock::Twilio::Webhooks::Messages.trigger(sid)
+                begin
+                  Mock::Twilio::Webhooks::Messages.trigger(sid)
+                rescue  => e
+                  puts e
+                end
               end
               body["sid"] = sid
             end
