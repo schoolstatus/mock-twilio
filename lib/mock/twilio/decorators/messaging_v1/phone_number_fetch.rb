@@ -4,7 +4,7 @@ module Mock
   module Twilio
     module Decorators
       module MessagingV1
-        class PhoneNumberCreate
+        class PhoneNumberFetch
           class << self
             include Mock::Twilio::Generator
 
@@ -12,7 +12,7 @@ module Mock
               body["date_updated"] = Time.current.rfc2822 if body["date_updated"]
               body["date_created"] = Time.current.rfc2822 if body["date_created"]
 
-              phone_number_sid(body) if body["sid"]
+              parse_messaging_phone_number_sid(body, request) if body["sid"]
               parse_messaging_service_sid(body, request) if body["service_sid"]
 
               body["account_sid"] = ::Twilio.account_sid if body["account_sid"]
@@ -23,10 +23,10 @@ module Mock
               body
             end
 
-            def phone_number_sid(body)
-              prefix = "PN"
-              sid = prefix + SecureRandom.hex(16)
-              body["sid"] = sid
+            def parse_messaging_phone_number_sid(body, request)
+              uri = URI(request.url)
+              phone_number_sid = uri.path.split('/')[5]
+              body["sid"] = phone_number_sid
             end
 
             def parse_messaging_service_sid(body, request)
