@@ -45,7 +45,7 @@ module Mock
           case url
           when %r{\/2010-04-01/Accounts/[A-Za-z0-9]+/}
             :api_2010
-          when %r{\/v1/Services/[A-Za-z0-9]+/}
+          when %r{\/v1\/Services\/\w{34}}
             :messaging_v1
           when %r{\/v1/CustomerProfiles}
             :customer_profiles_v1

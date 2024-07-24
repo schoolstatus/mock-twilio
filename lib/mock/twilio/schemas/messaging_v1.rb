@@ -1,37 +1,29 @@
 # frozen_string_literal: true
 
+require_relative "../decorators/messaging_v1/phone_number_list"
+require_relative "../decorators/messaging_v1/phone_number_create"
+require_relative "../decorators/messaging_v1/phone_number_fetch"
+
 module Mock
   module Twilio
     module Schemas
       class MessagingV1
         class << self
+          RESOURCES = {
+            phone_number_list: Mock::Twilio::Decorators::MessagingV1::PhoneNumberList,
+            phone_number_create: Mock::Twilio::Decorators::MessagingV1::PhoneNumberCreate,
+            phone_number_fetch: Mock::Twilio::Decorators::MessagingV1::PhoneNumberFetch,
+          }
           def for(body, request)
-            phone_number_sid(body) if body["phone_numbers"].first["sid"]
-            body["phone_numbers"].first["account_sid"] = ::Twilio.account_sid if body["phone_numbers"].first["account_sid"]
-            parse_messaging_service_sid(body, request) if body["phone_numbers"].first["service_sid"]
-            body["phone_numbers"].first["phone_number"] = "+19876543210" if body["phone_numbers"].first["phone_number"]
-            body["phone_numbers"].first["country_code"] = "US" if body["phone_numbers"].first["country_code"]
+            url = request.url.split(request.host).last
 
-            # Params for twilio pagination, needed for twilio-ruby serializers and absolute paths
-            body["meta"]["key"] = "phone_numbers" if body["meta"]["key"]
-            body["meta"]["page_size"] = 20 if body["meta"]["page_size"]
-            body["meta"]["first_page_url"] = "https://messaging.twilio.com/v1/Services/MGFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF/PhoneNumbers?PageSize=20&Page=0" if body["meta"]["first_page_url"]
-            body["meta"]["previous_page_url"] = "https://messaging.twilio.com/v1/Services/MGFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF/PhoneNumbers?PageSize=20&Page=0" if body["meta"]["previous_page_url"]
-            body["meta"]["next_page_url"] = "https://messaging.twilio.com/v1/Services/MGFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF/PhoneNumbers?PageSize=20&Page=1" if body["meta"]["next_page_url"]
-            body["meta"]["url"] = "https://messaging.twilio.com/v1/Services/MGFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF/PhoneNumbers?PageSize=20&Page=0" if body["meta"]["url"]
-            body
-          end
-
-          def phone_number_sid(body)
-            prefix = "PN"
-            sid = prefix + SecureRandom.hex(16)
-            body["phone_numbers"].first["sid"] = sid
-          end
-
-          def parse_messaging_service_sid(body, request)
-            uri = URI(request.url)
-            messaging_service_sid = uri.path.split('/')[3]
-            body["phone_numbers"].first["service_sid"] = messaging_service_sid
+            case url
+            when %r{\/v1\/Services\/\w{34}\/PhoneNumbers$}
+              return RESOURCES[:phone_number_list].decorate(body, request) if request.method == "GET"
+              return RESOURCES[:phone_number_create].decorate(body, request) if request.method == "POST"
+            when %r{\/v1\/Services\/\w{34}\/PhoneNumbers\/\w{34}}
+              RESOURCES[:phone_number_fetch].decorate(body, request)
+            end
           end
         end
       end
