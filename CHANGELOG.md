@@ -1,3 +1,9 @@
+## [0.8.0] - 2024-07-24
+- Support BrandsRegistratiosA2p
+- Support A2pTrustProduct
+- Support MessagingV1 PhoneNumbers
+- Add ErrorHandler for rufus-scheduler
+
 ## [0.7.2] - 2024-07-11
 - Add PhoneNumberList default limit 1 only on Mock
 

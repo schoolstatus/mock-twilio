@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name = "mock-twilio"
   spec.version = Mock::Twilio::VERSION
   spec.authors = ['SchoolStatus Platform Team']
-  spec.summary = "This repository contains Mock::Twilio::Client for Twilio's API."
+  spec.summary = "This repository contains Mock::Twilio::Client and Webhooks for Twilio's API."
   spec.description = "This repository contains Mock::Twilio::Client for Twilio's API."
   spec.homepage = "https://github.com/schoolstatus/mock-twilio"
   spec.license = "MIT"
