@@ -142,4 +142,32 @@ class Mock::TestTwilio < Minitest::Test
     assert_equal "http", response.env.request_headers['X-forwarded-proto']
     assert_equal "3/Xbee9zCe2IfVU8N6olgb3VBXg=", response.env.request_headers['X-twilio-signature']
   end
+
+  def test_mock_webhook_message_inbound_trigger
+    stub_request(:post, "http://shunkan-ido-service:3000/api/v1/twilio_requests/inbound").
+      with(
+        body: {"AccountSid"=>"ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "AddOns"=>"{\"status\":\"successful\",\"message\":null,\"code\":null,\"results\":{}}", "ApiVersion"=>"2010-04-01", "Body"=>"Inbound::Message mock reply", "From"=>"+1987654321", "FromCity"=>"SILVERDALE", "FromCountry"=>"US", "FromState"=>"WA", "FromZip"=>"98315", "MessageSid"=>"SIDTESTING", "MessagingServiceSid"=>"MFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFff", "NumMedia"=>"0", "NumSegments"=>"1", "SmsMessageSid"=>"SIDTESTING", "SmsSid"=>"SIDTESTING", "SmsStatus"=>"received", "To"=>"+1123456789", "ToCity"=>"SARDIS", "ToCountry"=>"US", "ToState"=>"MS", "ToZip"=>"38666"},
+        headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Authorization'=>'Basic QUNGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRjpTS1hYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhY',
+          'Content-Type'=>'application/x-www-form-urlencoded',
+          'Host'=>'forwarded_host.app',
+          'User-Agent'=>'Faraday v2.9.1',
+          'X-Forwarded-Proto'=>'http',
+          'X-Twilio-Signature'=>'Ivv/g+EGMwuhN8+3PpwlsS+A1eg='
+        }).
+        to_return(status: 200, body: "", headers: {})
+
+    request = Struct.new(:To, :From, :MessagingServiceSid)
+    request_data = request.new(To: "+1123456789", From: "+1987654321", MessagingServiceSid: "MFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFff")
+    response = Mock::Twilio::Webhooks::InboundMessages.trigger("SIDTESTING", request_data )
+
+    expected_body = "AccountSid=ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF&AddOns=%7B%22status%22%3A%22successful%22%2C%22message%22%3Anull%2C%22code%22%3Anull%2C%22results%22%3A%7B%7D%7D&ApiVersion=2010-04-01&Body=Inbound%3A%3AMessage+mock+reply&From=%2B1987654321&FromCity=SILVERDALE&FromCountry=US&FromState=WA&FromZip=98315&MessageSid=SIDTESTING&MessagingServiceSid=MFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFff&NumMedia=0&NumSegments=1&SmsMessageSid=SIDTESTING&SmsSid=SIDTESTING&SmsStatus=received&To=%2B1123456789&ToCity=SARDIS&ToCountry=US&ToState=MS&ToZip=38666"
+
+    assert_equal "forwarded_host.app", response.env.request_headers['Host']
+    assert_equal "http", response.env.request_headers['X-forwarded-proto']
+    assert_equal "Ivv/g+EGMwuhN8+3PpwlsS+A1eg=", response.env.request_headers['X-twilio-signature']
+    assert_equal expected_body, response.env.request_body
+  end
 end
