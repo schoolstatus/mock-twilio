@@ -17,6 +17,9 @@ module Mock
               body["messaging_service_sid"] = request.data["MessagingServiceSid"] if request.data["MessagingServiceSid"]
               pagination(body) if body["available_phone_numbers"]
 
+              body["to"] = request.data["To"] if request.data["To"]
+              body["from"] = request.data["From"] if request.data["From"]
+
               body
             end
 
@@ -36,9 +39,9 @@ module Mock
                 begin
                   response = Mock::Twilio::Webhooks::Messages.trigger(sid)
 
-                  if response.status == 200
+                  if response.success? && request.data["Body"].downcase.include?("inbound")
                     inbound_sid = prefix + SecureRandom.hex(16)
-                    Mock::Twilio::Webhooks::InboundMessages.trigger(inbound_sid, request.data['MessagingServiceSid'])
+                    Mock::Twilio::Webhooks::InboundMessages.trigger(inbound_sid, request.data)
                   end
                 rescue  => e
                   puts e

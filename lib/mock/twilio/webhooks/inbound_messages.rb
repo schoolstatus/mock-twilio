@@ -6,13 +6,14 @@ module Mock
       class InboundMessages < Base
         URL = "/api/v1/twilio_requests/inbound"
 
-        def self.trigger(sid, messaging_service_sid)
+        def self.trigger(sid, params)
+          raise Webhooks::RestError, "Invalid Inbound message data" if params['To'].empty? || params['From'].empty?
           # Wait simulation from twilio
           sleep DELAY.sample
 
           request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
 
-          data = inbound_data(sid, messaging_service_sid)
+          data = inbound_data(sid, params)
 
           signature = build_signature_for_request(request_url, data)
 
@@ -33,7 +34,7 @@ module Mock
           end
         end
 
-        def self.inbound_data(sid, messaging_service_sid)
+        def self.inbound_data(sid, params)
           {
             "ToCountry": "US",
             "ToState": "MS",
@@ -45,16 +46,16 @@ module Mock
             "FromState": "WA",
             "SmsStatus": "received",
             "FromCity": "SILVERDALE",
-            "Body": "InboundMessage reply",
+            "Body": "Inbound::Message mock reply",
             "FromCountry": "US",
-            "To": "+xxxxxx",
-            "MessagingServiceSid": messaging_service_sid,
+            "To": params["To"],
+            "MessagingServiceSid": params['MessagingServiceSid'],
             "ToZip": "38666",
             "AddOns": "{\"status\":\"successful\",\"message\":null,\"code\":null,\"results\":{}}",
             "NumSegments": "1",
             "MessageSid": sid,
             "AccountSid": ::Twilio.account_sid,
-            "From": "+yyyyyyy",
+            "From": params["From"],
             "ApiVersion": "2010-04-01"
           }
         end
