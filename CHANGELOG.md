@@ -1,3 +1,6 @@
+## [1.0.0] - 2024-08-06
+- Support Webhooks::InboundMessages
+
 ## [0.8.0] - 2024-07-24
 - Support BrandsRegistratiosA2p
 - Support A2pTrustProduct
