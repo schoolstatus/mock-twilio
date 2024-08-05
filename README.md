@@ -37,6 +37,13 @@ OR
 | `client.lookups.v2.phone_numbers("+14159929960").fetch(fields: :line_type_intelligence)`  | :white_check_mark:  |
 | `client.calls.create(url: '<http://demo.twilio.com/docs/voice.xml>', to: '+14155551212', from: '+15017122661', status_callback: '<https://myapp.com/events>', status_callback_event: ['ringing'], status_callback_method: 'POST')`  | :white_check_mark:  |
 | `client.conferences("CF"+("F")*32).participants.create(label: 'customer', early_media: true, beep: 'onEnter', status_callback: '<https://myapp.com/events>', status_callback_event: ['ringing'], record: true, from: '+15017122661', to: '+15558675310')`  | :white_check_mark:  |
+| `client.trusthub.v1.customer_profiles.create(**twilio_attributes)`  | :white_check_mark:  |
+| `client.trusthub.v1.customer_profiles(customer_profile_sid).customer_profiles_entity_assignments.create(object_sid:)`  | :white_check_mark:  |
+| `client.trusthub.v1.end_users.create(**twilio_parameters)`  | :white_check_mark:  |
+| `client.trusthub.v1.supporting_documents.create(**twilio_parameters)`  | :white_check_mark:  |
+| `client.addresses.create(**twilio_parameters)`  | :white_check_mark:  |
+| `client.trusthub.v1.customer_profiles.create(**twilio_attributes)`  | :white_check_mark:  |
+| `client.trusthub.v1.customer_profiles(customer_profile.sid).customer_profiles_evaluations.create(policy_sid:)`  | :white_check_mark:  |
 
 
 ## Trigger resources updates
