@@ -14,7 +14,11 @@ module Mock
               body["end_time"] = Time.current.rfc2822 if body["end_time"]
 
               message_sid(body, request) if body["sid"]
+              body["messaging_service_sid"] = request.data["MessagingServiceSid"] if request.data["MessagingServiceSid"]
               pagination(body) if body["available_phone_numbers"]
+
+              body["to"] = request.data["To"] if request.data["To"]
+              body["from"] = request.data["From"] if request.data["From"]
 
               body
             end
@@ -33,7 +37,12 @@ module Mock
               scheduler = Rufus::Scheduler.new
               scheduler.in '2s' do
                 begin
-                  Mock::Twilio::Webhooks::Messages.trigger(sid)
+                  response = Mock::Twilio::Webhooks::Messages.trigger(sid)
+
+                  if response.success? && request.data["Body"].downcase.include?("inbound")
+                    inbound_sid = prefix + SecureRandom.hex(16)
+                    Mock::Twilio::Webhooks::InboundMessages.trigger(inbound_sid, request.data)
+                  end
                 rescue  => e
                   puts e
                 end
