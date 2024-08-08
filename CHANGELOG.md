@@ -1,3 +1,6 @@
+## [1.1.0] - 2024-08-08
+- Add conference call no-answer use case webhooks flow
+
 ## [1.0.0] - 2024-08-06
 - Support Webhooks::InboundMessages
 
