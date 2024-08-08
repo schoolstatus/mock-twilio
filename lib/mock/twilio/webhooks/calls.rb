@@ -50,7 +50,7 @@ module Mock
             :CallerState=> "CA",
             :CallerZip=> "no value",
             :CallSid=> sid,
-            :CallStatus=> "in-progress",
+            :CallStatus=> "ringing",
             :Direction=> "outbound-api",
             :Duration=> "0",
             :From=>	"+18111111111",

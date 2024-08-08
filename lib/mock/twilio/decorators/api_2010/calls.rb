@@ -30,15 +30,17 @@ module Mock
               scheduler.in '2s' do
                 conference_uuid = request.data["Url"].split("conference_uuid=").last
                 begin
-                  response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid)
+                  response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'unknown')
 
-                  conference_response = if response.status == 200
+                  conference_response = if response.success?
                                           twiMl_xml = Nokogiri::XML response.body
                                           friendly_name = twiMl_xml.at_xpath('//Dial').at_xpath('//Conference').children.text
                                           Mock::Twilio::Webhooks::Conferences.trigger(friendly_name)
                                         end
 
-                  Mock::Twilio::Webhooks::Calls.trigger(sid) if conference_response.status == 200
+                  participant_response = Mock::Twilio::Webhooks::Calls.trigger(sid) if conference_response.success?
+
+                  Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'machine_start') if participant_response.success?
                 rescue  => e
                   puts e
                 end
