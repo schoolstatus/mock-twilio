@@ -6,13 +6,13 @@ module Mock
       class Calls < Base
         URL = "/api/v1/twilio_calls/participant_status_changes"
 
-        def self.trigger(sid)
+        def self.trigger(sid, participant_status)
           # Wait simulation from twilio
           sleep DELAY.sample
 
           request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
 
-          data = call_data(sid)
+          data = call_data(sid, participant_status)
 
           signature = build_signature_for_request(request_url, data)
 
@@ -33,7 +33,7 @@ module Mock
           end
         end
 
-        def self.call_data(sid)
+        def self.call_data(sid, participant_status)
           {
             :AccountSid=> twilio_client.account_sid,
             :ApiVersion=>	"2010-04-01",
@@ -50,7 +50,7 @@ module Mock
             :CallerState=> "CA",
             :CallerZip=> "no value",
             :CallSid=> sid,
-            :CallStatus=> "ringing",
+            :CallStatus=> participant_status,
             :Direction=> "outbound-api",
             :Duration=> "0",
             :From=>	"+18111111111",
