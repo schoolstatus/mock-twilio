@@ -42,7 +42,8 @@ module Mock
                   participant_ringing   = Mock::Twilio::Webhooks::Calls.trigger(sid, 'ringing') if conference_response.success?
                   participant_completed = Mock::Twilio::Webhooks::Calls.trigger(sid, 'completed') if participant_ringing.success?
 
-                  Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'human', 'completed') if participant_completed.success?
+                  call_completed = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'human', 'completed') if participant_completed.success?
+                  Mock::Twilio::Webhooks::Voicemail.trigger(sid) if call_completed.success? && [true,false].sample
                 rescue  => e
                   puts e
                 end
