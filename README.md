@@ -28,22 +28,22 @@ OR
 
 ## Features Support
 
-| Mock::Twilio::Client | Support       |
+| Support | Mock::Twilio::Client   |
 | ------------- | ------------- |
-| `client.messages.create(to: "+593978613041", body: "Testing SMS", from: "+13212855389")`  | :white_check_mark:  |
-| `client.messaging.v1.services("MG"+"F"*32).phone_numbers.create(phone_number_sid: @phone_number_sid)`  | :white_check_mark:  |
-| `client.available_phone_numbers('US').local.list(limit: 20)`  | :white_check_mark:  |
-| `client.incoming_phone_numbers.create(phone_number: "+1987654321", voice_url: "#{BASE_URL}/api/v1/twilio_calls/incoming", sms_url: "#{BASE_URL}/api/v1/twilio_requests/inbound")`  | :white_check_mark:  |
-| `client.lookups.v2.phone_numbers("+14159929960").fetch(fields: :line_type_intelligence)`  | :white_check_mark:  |
-| `client.calls.create(url: '<http://demo.twilio.com/docs/voice.xml>', to: '+14155551212', from: '+15017122661', status_callback: '<https://myapp.com/events>', status_callback_event: ['ringing'], status_callback_method: 'POST')`  | :white_check_mark:  |
-| `client.conferences("CF"+("F")*32).participants.create(label: 'customer', early_media: true, beep: 'onEnter', status_callback: '<https://myapp.com/events>', status_callback_event: ['ringing'], record: true, from: '+15017122661', to: '+15558675310')`  | :white_check_mark:  |
-| `client.trusthub.v1.customer_profiles.create(**twilio_attributes)`  | :white_check_mark:  |
-| `client.trusthub.v1.customer_profiles(customer_profile_sid).customer_profiles_entity_assignments.create(object_sid:)`  | :white_check_mark:  |
-| `client.trusthub.v1.end_users.create(**twilio_parameters)`  | :white_check_mark:  |
-| `client.trusthub.v1.supporting_documents.create(**twilio_parameters)`  | :white_check_mark:  |
-| `client.addresses.create(**twilio_parameters)`  | :white_check_mark:  |
-| `client.trusthub.v1.customer_profiles.create(**twilio_attributes)`  | :white_check_mark:  |
-| `client.trusthub.v1.customer_profiles(customer_profile.sid).customer_profiles_evaluations.create(policy_sid:)`  | :white_check_mark:  |
+| :white_check_mark: | `client.messages.create(to: "+593978613041", body: "Testing SMS", from: "+13212855389")`  |
+| :white_check_mark: | `client.messaging.v1.services("MG"+"F"*32).phone_numbers.create(phone_number_sid: @phone_number_sid)`  |
+| :white_check_mark: | `client.available_phone_numbers('US').local.list(limit: 20)`  |
+| :white_check_mark: | `client.incoming_phone_numbers.create(phone_number: "+1987654321", voice_url: "#{BASE_URL}/api/v1/twilio_calls/incoming", sms_url: "#{BASE_URL}/api/v1/twilio_requests/inbound")`  |
+| :white_check_mark: | `client.lookups.v2.phone_numbers("+14159929960").fetch(fields: :line_type_intelligence)`  |
+| :white_check_mark: | `client.calls.create(url: '<http://demo.twilio.com/docs/voice.xml>', to: '+14155551212', from: '+15017122661', status_callback: '<https://myapp.com/events>', status_callback_event: ['ringing'], status_callback_method: 'POST')`  |
+| :white_check_mark: | `client.conferences("CF"+("F")*32).participants.create(label: 'customer', early_media: true, beep: 'onEnter', status_callback: '<https://myapp.com/events>', status_callback_event: ['ringing'], record: true, from: '+15017122661', to: '+15558675310')`  |
+| :white_check_mark: | `client.trusthub.v1.customer_profiles.create(**twilio_attributes)`  |
+| :white_check_mark: | `client.trusthub.v1.customer_profiles(customer_profile_sid).customer_profiles_entity_assignments.create(object_sid:)`  |
+| :white_check_mark: | `client.trusthub.v1.end_users.create(**twilio_parameters)`
+| :white_check_mark: | `client.trusthub.v1.supporting_documents.create(**twilio_parameters)`  |
+| :white_check_mark: | `client.addresses.create(**twilio_parameters)`  |
+| :white_check_mark: | `client.trusthub.v1.customer_profiles.create(**twilio_attributes)`  |
+| :white_check_mark: | `client.trusthub.v1.customer_profiles(customer_profile.sid).customer_profiles_evaluations.create(policy_sid:)`  |
 
 
 ## Trigger resources updates
@@ -54,6 +54,7 @@ OR
 | `Webhooks::InboundMessages`  | :white_check_mark: |
 | `Webhooks::Calls`  | :white_check_mark:  |
 | `Webhooks::CallStatusUpdates`  | :white_check_mark:  |
+| `Webhooks::Voicemail`  | :white_check_mark:  |
 | `Webhooks::Conferences`  | :white_check_mark:  |
 | `Webhooks::CustomerProfiles`  | :white_check_mark:  |
 | `Webhooks::Brands`  | :white_check_mark:  |
