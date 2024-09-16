@@ -30,7 +30,7 @@ module Mock
               scheduler.in '2s' do
                 conference_uuid = request.data["Url"].split("conference_uuid=").last
                 begin
-                  response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'unknown')
+                  response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'unknown', 'ringing')
 
                   conference_response = if response.success?
                                           twiMl_xml = Nokogiri::XML response.body
@@ -38,9 +38,12 @@ module Mock
                                           Mock::Twilio::Webhooks::Conferences.trigger(friendly_name)
                                         end
 
-                  participant_response = Mock::Twilio::Webhooks::Calls.trigger(sid) if conference_response.success?
+                  # Participant
+                  participant_ringing   = Mock::Twilio::Webhooks::Calls.trigger(sid, 'ringing') if conference_response.success?
+                  participant_completed = Mock::Twilio::Webhooks::Calls.trigger(sid, 'completed') if participant_ringing.success?
 
-                  Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'machine_start') if participant_response.success?
+                  call_completed = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'human', 'completed') if participant_completed.success?
+                  Mock::Twilio::Webhooks::Voicemail.trigger(sid) if call_completed.success? && [true,false].sample
                 rescue  => e
                   puts e
                 end

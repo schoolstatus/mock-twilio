@@ -60,7 +60,7 @@ class Mock::TestTwilio < Minitest::Test
 
     assert "CA", response.call_sid[0,2]
     assert "CF", response.conference_sid[0,2]
-    assert "initiated", response.status
+    assert_equal "initiated", response.status
   end
 
   def test_mock_client_conferences_update
