@@ -1,3 +1,6 @@
+## [1.2.0] - 2024-09-30
+- Add direct calls voicemail support
+
 ## [1.1.0] - 2024-08-08
 - Add conference call no-answer use case webhooks flow
 
