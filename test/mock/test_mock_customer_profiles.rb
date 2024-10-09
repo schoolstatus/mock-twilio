@@ -20,17 +20,8 @@ class Mock::TestTwilio < Minitest::Test
                               "links"=>{}}
 
     stub_request(:post, "http://twilio_mock_server:4010/v1/CustomerProfiles").
-      with(
-        body: {"Email"=>"test@test.com", "FriendlyName"=>"Test friendly_name", "PolicySid"=>"RNFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "StatusCallback"=>"http://host.com/webhooks/twilio/customer_profiles_compliance"},
-        headers: {
-          'Accept'=>'application/json',
-          'Accept-Charset'=>'utf-8',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Basic QUNGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRjpTS1hYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhY',
-          'Content-Type'=>'application/x-www-form-urlencoded',
-          'User-Agent'=>'twilio-ruby/7.1.0 (linux x86_64) Ruby/3.2.2'
-        }).
-        to_return(status: 200, body: mock_server_response.to_json, headers: {})
+      with(body: {"Email"=>"test@test.com", "FriendlyName"=>"Test friendly_name", "PolicySid"=>"RNFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "StatusCallback"=>"http://host.com/webhooks/twilio/customer_profiles_compliance"}).
+      to_return(status: 200, body: mock_server_response.to_json, headers: {})
 
 
     twilio_attributes = {
@@ -61,17 +52,8 @@ class Mock::TestTwilio < Minitest::Test
                               "url"=>"http://example.com"}
 
     stub_request(:post, "http://twilio_mock_server:4010/v1/CustomerProfiles/BUFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF/EntityAssignments").
-      with(
-        body: {"ObjectSid"=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
-        headers: {
-          'Accept'=>'application/json',
-          'Accept-Charset'=>'utf-8',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Basic QUNGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRjpTS1hYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhY',
-          'Content-Type'=>'application/x-www-form-urlencoded',
-          'User-Agent'=>'twilio-ruby/7.1.0 (linux x86_64) Ruby/3.2.2'
-        }).
-        to_return(status: 200, body: mock_server_response.to_json, headers: {})
+      with(body: {"ObjectSid"=>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}).
+      to_return(status: 200, body: mock_server_response.to_json, headers: {})
 
     mock_client = Mock::Twilio::Client.new
     client = ::Twilio::REST::Client.new(nil, nil, nil, nil, mock_client)
@@ -93,17 +75,8 @@ class Mock::TestTwilio < Minitest::Test
                              "url"=>"http://example.com"}
 
     stub_request(:post, "http://twilio_mock_server:4010/v1/CustomerProfiles/BUaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/Evaluations").
-      with(
-        body: {"PolicySid"=>"RNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
-        headers: {
-          'Accept'=>'application/json',
-          'Accept-Charset'=>'utf-8',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Basic QUNGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRjpTS1hYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhY',
-          'Content-Type'=>'application/x-www-form-urlencoded',
-          'User-Agent'=>'twilio-ruby/7.1.0 (linux x86_64) Ruby/3.2.2'
-        }).
-        to_return(status: 200, body: mock_server_response.to_json, headers: {})
+      with(body: {"PolicySid"=>"RNaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}).
+      to_return(status: 200, body: mock_server_response.to_json, headers: {})
 
 
     mock_client = Mock::Twilio::Client.new
@@ -130,17 +103,8 @@ class Mock::TestTwilio < Minitest::Test
                              "links"=>{}}
 
     stub_request(:post, "http://twilio_mock_server:4010/v1/CustomerProfiles/BU8f9119bc8f39527dacf01b65b9acb329").
-      with(
-        body: {"Status"=>"pending-review"},
-        headers: {
-          'Accept'=>'application/json',
-          'Accept-Charset'=>'utf-8',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Basic QUNGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRjpTS1hYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhY',
-          'Content-Type'=>'application/x-www-form-urlencoded',
-          'User-Agent'=>'twilio-ruby/7.1.0 (linux x86_64) Ruby/3.2.2'
-        }).
-        to_return(status: 200, body: mock_server_response.to_json, headers: {})
+      with(body: {"Status"=>"pending-review"}).
+      to_return(status: 200, body: mock_server_response.to_json, headers: {})
 
 
     mock_client = Mock::Twilio::Client.new
@@ -149,5 +113,48 @@ class Mock::TestTwilio < Minitest::Test
 
     assert_equal "BU", response.sid[0,2]
     assert_equal "pending-review", response.status
+  end
+
+  def test_mock_client_customer_profiles_channel_endpoint_assignments
+    mock_server_response = {
+      "results" => [
+        {
+          "sid" => "stringstringstringstringstringstri",
+          "customer_profile_sid" => "stringstringstringstringstringstri",
+          "account_sid" => "stringstringstringstringstringstri",
+          "channel_endpoint_type" => "string",
+          "channel_endpoint_sid" => "stringstringstringstringstringstri",
+          "date_created" => "2019-08-24T14:15:22Z",
+          "url" => "http://example.com"
+        }
+      ],
+      "meta" => {
+        "first_page_url" => "http://example.com",
+        "next_page_url" => "http://example.com",
+        "page" => 0,
+        "page_size" => 0,
+        "previous_page_url" => "http://example.com",
+        "url" => "http://example.com",
+        "key" => "string"
+      }
+    }
+
+    stub_request(:get, "http://twilio_mock_server:4010/v1/CustomerProfiles/BU8f9119bc8f39527dacf01b65b9acb329/ChannelEndpointAssignments?PageSize=20").
+      to_return(status: 200, body: mock_server_response.to_json, headers: {})
+
+
+    mock_client = Mock::Twilio::Client.new
+    client = ::Twilio::REST::Client.new(nil, nil, nil, nil, mock_client)
+    response = client.trusthub.v1.customer_profiles("BU8f9119bc8f39527dacf01b65b9acb329").customer_profiles_channel_endpoint_assignment.list(limit: 20)
+
+    response.each do |assignment|
+      assert assignment.customer_profile_sid.match(%r{BU[0-9a-zA-Z]{32}})
+      assert assignment.sid.match(%r{RA[0-9a-zA-Z]{32}})
+      assert assignment.channel_endpoint_sid.match(%r{PN[0-9a-zA-Z]{32}})
+      assert assignment.url.match(%r{https://trusthub\.twilio\.com/v1/CustomerProfiles/BU[0-9a-zA-Z]{32}/ChannelEndpointAssignments/RA[0-9a-zA-Z]{32}})
+      assert_equal "phone-number", assignment.channel_endpoint_type
+      assert_equal ::Twilio.account_sid, assignment.account_sid
+      assert_equal Time, assignment.date_created.class
+    end
   end
 end
