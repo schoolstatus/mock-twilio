@@ -5,6 +5,7 @@ require_relative "../decorators/api_2010/calls"
 require_relative "../decorators/api_2010/conferences_participants_update"
 require_relative "../decorators/api_2010/conferences_participants_create"
 require_relative "../decorators/api_2010/addresses"
+require_relative "../decorators/api_2010/incoming_phone_numbers"
 
 module Mock
   module Twilio
@@ -17,6 +18,7 @@ module Mock
             conferences_participants_update: Mock::Twilio::Decorators::Api2010::ConferencesParticipantsUpdate,
             conferences_participants_create: Mock::Twilio::Decorators::Api2010::ConferencesParticipantsCreate,
             addresses: Mock::Twilio::Decorators::Api2010::Addresses,
+            incoming_phone_numbers: Mock::Twilio::Decorators::Api2010::IncomingPhoneNumbers,
           }
 
           PAGES_KEYS = [
@@ -47,6 +49,8 @@ module Mock
               RESOURCES[:conferences_participants_create].decorate(body, request)
             when %r{\/2010-04-01/Accounts/[A-Za-z0-9]+/Addresses.json}
               RESOURCES[:addresses].decorate(body, request)
+            when %r{\/2010-04-01/Accounts/[A-Za-z0-9]+/IncomingPhoneNumbers/[A-Za-z0-9]+.json}
+              RESOURCES[:incoming_phone_numbers].decorate(body, request)
             end
           end
         end

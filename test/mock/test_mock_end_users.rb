@@ -14,17 +14,8 @@ class Mock::TestTwilio < Minitest::Test
                              "url"=>"http://example.com"}
 
     stub_request(:post, "http://twilio_mock_server:4010/v1/EndUsers").
-      with(
-        body: {"Attributes"=>"{}", "FriendlyName"=>"friendly_name", "Type"=>"authorized_representative_1"},
-        headers: {
-          'Accept'=>'application/json',
-          'Accept-Charset'=>'utf-8',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Basic QUNGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRjpTS1hYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhY',
-          'Content-Type'=>'application/x-www-form-urlencoded',
-          'User-Agent'=>'twilio-ruby/7.1.0 (linux x86_64) Ruby/3.2.2'
-        }).
-        to_return(status: 200, body: mock_server_response.to_json, headers: {})
+      with(body: {"Attributes"=>"{}", "FriendlyName"=>"friendly_name", "Type"=>"authorized_representative_1"}).
+      to_return(status: 200, body: mock_server_response.to_json, headers: {})
 
 
     payload = {

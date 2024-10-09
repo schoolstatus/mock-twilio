@@ -36,17 +36,8 @@ class Mock::TestTwilio < Minitest::Test
                              "subresource_uris"=>{}}
 
     stub_request(:post, "http://twilio_mock_server:4010/2010-04-01/Accounts/ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF/Calls.json").
-      with(
-        body: {"From"=>"+18111111111", "MachineDetection"=>"Enable", "StatusCallback"=>"http://shunkan-ido-service/api/v1/twilio_calls/participant_status_changes", "StatusCallbackEvent"=>"completed", "StatusCallbackMethod"=>"POST", "Timeout"=>"30", "To"=>"+18222222222", "Url"=>"http://shunkan-ido-service/api/v1/twilio_calls/voice_responses?conference_uuid=c843e10f-142a-4c31-a1ca-dcf67233c7c8"},
-        headers: {
-          'Accept'=>'application/json',
-          'Accept-Charset'=>'utf-8',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Authorization'=>'Basic QUNGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRkZGRjpTS1hYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhY',
-          'Content-Type'=>'application/x-www-form-urlencoded',
-          'User-Agent'=>'twilio-ruby/7.1.0 (linux x86_64) Ruby/3.2.2'
-        }).
-        to_return(status: 200, body: mock_server_response.to_json, headers: {})
+      with(body: {"From"=>"+18111111111", "MachineDetection"=>"Enable", "StatusCallback"=>"http://shunkan-ido-service/api/v1/twilio_calls/participant_status_changes", "StatusCallbackEvent"=>"completed", "StatusCallbackMethod"=>"POST", "Timeout"=>"30", "To"=>"+18222222222", "Url"=>"http://shunkan-ido-service/api/v1/twilio_calls/voice_responses?conference_uuid=c843e10f-142a-4c31-a1ca-dcf67233c7c8"}).
+      to_return(status: 200, body: mock_server_response.to_json, headers: {})
 
     conference_uuid = "c843e10f-142a-4c31-a1ca-dcf67233c7c8"
     twilio_number = "+18111111111"
