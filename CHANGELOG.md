@@ -1,3 +1,9 @@
+## [1.3.0] - 2024-10-10
+- Support IncomingPhoneNumbers Updates
+- Support CustomerProfilesV1 ChannelEndpointAssignments
+- Support TrustProductsV1 ChannelEndpointAssignments
+- Unlock gemspec dependencies
+
 ## [1.2.0] - 2024-09-30
 - Add direct calls voicemail support
 
