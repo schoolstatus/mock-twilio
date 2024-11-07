@@ -11,6 +11,7 @@ require "twilio-ruby"
 
 require "minitest/autorun"
 require 'webmock/minitest'
+require "rack"
 require "pry"
 
 Twilio.configure do |config|

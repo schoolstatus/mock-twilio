@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rufus-scheduler", ">= 3.9.1"
   spec.add_dependency "twilio-ruby", ">= 7.0.0"
   spec.add_dependency "activesupport", ">= 6.0.0"
+  spec.add_dependency "rack", ">= 3.1.8"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
