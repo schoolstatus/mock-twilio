@@ -1,3 +1,6 @@
+## [1.3.0] - 2024-11-07
+- Support forced_error 429 response
+
 ## [1.3.0] - 2024-10-10
 - Support IncomingPhoneNumbers Updates
 - Support CustomerProfilesV1 ChannelEndpointAssignments
