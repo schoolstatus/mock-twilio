@@ -32,4 +32,17 @@ class Mock::TestTwilio < Minitest::Test
 
     assert_raises(Twilio::REST::RestError) { client.messages.create(to: "+593978613041", body: "RB This is the ship that made the Kesssssel Run in fourteen parsecs?", from: "+13212855389") }
   end
+
+  def test_mock_client_custom_error
+    mock_server_response = { "error" => "Too many request"  }
+
+    stub_request(:post, "http://twilio_mock_server:4010/2010-04-01/Accounts/ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF/Messages.json").
+      with(body: {"Body"=>"Create Message with error", "From"=>"+13212855389", "To"=>"+593978613041"}).
+      to_return(status: 429, body: mock_server_response.to_json, headers: {})
+
+    mock_client = Mock::Twilio::Client.new
+    client = ::Twilio::REST::Client.new(nil, nil, nil, nil, mock_client)
+
+    assert_raises(Twilio::REST::RestError) { client.messages.create(to: "+593978613041", body: "Create Message with error", from: "+13212855389") }
+  end
 end
