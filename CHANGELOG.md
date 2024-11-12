@@ -1,4 +1,7 @@
-## [1.3.0] - 2024-11-07
+## [1.3.2] - 2024-11-12
+- Support custom lookupV2 line_type_intelligence mobile & landline
+
+## [1.3.1] - 2024-11-07
 - Support forced_error 429 response
 
 ## [1.3.0] - 2024-10-10
