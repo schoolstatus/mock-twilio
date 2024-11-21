@@ -35,9 +35,10 @@ module Mock
               prefix = request.data["MediaUrl"] ? "MM" : "SM"
               sid = prefix + SecureRandom.hex(16)
               scheduler = Rufus::Scheduler.new
+              callback_url = request.data["StatusCallback"] if request.data["StatusCallback"]
               scheduler.in '2s' do
                 begin
-                  response = Mock::Twilio::Webhooks::Messages.trigger(sid)
+                  response = Mock::Twilio::Webhooks::Messages.trigger(sid, callback_url)
 
                   if response.success? && request.data["Body"].downcase.include?("inbound")
                     inbound_sid = prefix + SecureRandom.hex(16)
