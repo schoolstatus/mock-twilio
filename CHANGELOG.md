@@ -1,3 +1,6 @@
+## [1.4.0] - 2024-11-21
+- Support StatusCallback fordwarding webhook for Messages
+
 ## [1.3.2] - 2024-11-12
 - Support custom lookupV2 line_type_intelligence mobile & landline
 
