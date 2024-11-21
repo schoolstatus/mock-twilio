@@ -4,13 +4,12 @@ module Mock
   module Twilio
     module Webhooks
       class Messages < Base
-        URL = "/api/v1/twilio_requests/webhook_message_updates"
-
-        def self.trigger(sid)
+        def self.trigger(sid, callback_url)
           # Wait simulation from twilio
           sleep DELAY.sample
 
-          request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
+          request_url = callback_url
+          url = callback_url.split(Mock::Twilio.host).last
 
           data = { :MessageSid=>sid, :MessageStatus=>"delivered" }
 
@@ -19,7 +18,7 @@ module Mock
           response = webhook_client.request(Mock::Twilio.host,
                                             Mock::Twilio.port,
                                             'POST',
-                                            URL,
+                                            url,
                                             nil,
                                             data,
                                             headers.merge!({ 'X-Twilio-Signature': signature }),

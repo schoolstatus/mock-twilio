@@ -4,15 +4,15 @@ require "test_helper"
 
 class Mock::TestTwilio < Minitest::Test
   def test_mock_webhook_message_trigger
-    stub_request(:post, "http://shunkan-ido-service:3000/api/v1/twilio_requests/webhook_message_updates").
+    stub_request(:post, "http://test.com/callback_url").
       with(body: {"MessageSid"=>"SIDTESTING", "MessageStatus"=>"delivered"}).
       to_return(status: 200, body: "", headers: {})
 
-    response = Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING")
+    response = Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING", "http://test.com/callback_url")
 
     assert_equal "forwarded_host.app", response.env.request_headers['Host']
     assert_equal "http", response.env.request_headers['X-forwarded-proto']
-    assert_equal "WNqVAu7AugB+SUKrULuBh6cyOKM=", response.env.request_headers['X-twilio-signature']
+    assert_equal "R/t8sPRgN+rlhwL3LEQFwLJl7Jk=", response.env.request_headers['X-twilio-signature']
     assert_equal "MessageSid=SIDTESTING&MessageStatus=delivered", response.env.request_body
   end
 
@@ -21,23 +21,23 @@ class Mock::TestTwilio < Minitest::Test
                                   "message"=>"There was an error related with the Twilio API",
                                   "detail"=>"Invalid Twilio Token, verify the signature"}}
 
-    stub_request(:post, "http://shunkan-ido-service:3000/api/v1/twilio_requests/webhook_message_updates").
+    stub_request(:post, "http://test.com/callback_url").
       with(body: {"MessageSid"=>"SIDTESTING", "MessageStatus"=>"delivered"}).
       to_return(status: 500, body: service_response.to_json, headers: { "Content-Type" => "application/json"} )
 
 
-    assert_raises(Mock::Twilio::Webhooks::RestError) { Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING") }
+    assert_raises(Mock::Twilio::Webhooks::RestError) { Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING", "http://test.com/callback_url") }
   end
 
   def test_mock_webhook_message_trigger_error_html
     service_response ="<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n </head> \n </body>\n</html>\n"
 
-    stub_request(:post, "http://shunkan-ido-service:3000/api/v1/twilio_requests/webhook_message_updates").
+    stub_request(:post, "http://test.com/callback_url").
       with(body: {"MessageSid"=>"SIDTESTING", "MessageStatus"=>"delivered"}).
       to_return(status: 500, body: service_response, headers: { "Content-Type" => "text/html; charset=UTF-8"} )
 
 
-    assert_raises(Mock::Twilio::Webhooks::RestError) { Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING") }
+    assert_raises(Mock::Twilio::Webhooks::RestError) { Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING", "http://test.com/callback_url") }
   end
 
   def test_mock_webhook_calls_trigger

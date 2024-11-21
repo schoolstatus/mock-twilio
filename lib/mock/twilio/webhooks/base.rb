@@ -26,10 +26,9 @@ module Mock
         end
 
         def self.headers
-          {
-            'X-Forwarded-Proto': Mock::Twilio.proto,
-            'Host': Mock::Twilio.forwarded_host
-          }
+          return { 'Host': Mock::Twilio.forwarded_host }.merge!({ 'X-Forwarded-Proto': Mock::Twilio.proto }) if Mock::Twilio.proto == "http"
+
+          { 'Host': Mock::Twilio.forwarded_host }
         end
       end
     end
