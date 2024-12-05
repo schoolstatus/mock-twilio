@@ -52,8 +52,10 @@ module Mock
             when %r{\/2010-04-01/Accounts/[A-Za-z0-9]+/Addresses.json}
               RESOURCES[:addresses].decorate(body, request)
             when %r{\/2010-04-01/Accounts/[A-Za-z0-9]+/IncomingPhoneNumbers/[A-Za-z0-9]+.json}
+              # Update
               RESOURCES[:incoming_phone_numbers].decorate(body, request)
             when %r{\/2010-04-01/Accounts/[A-Za-z0-9]+/IncomingPhoneNumbers.json}
+              # Create
               RESOURCES[:incoming_phone_numbers].decorate(body, request)
             when %r{\/2010-04-01/Accounts/[A-Za-z0-9]+/AvailablePhoneNumbers/[A-Z]+/Local.json}
               RESOURCES[:available_phone_numbers_local].decorate(body, request)
