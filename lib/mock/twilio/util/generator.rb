@@ -4,7 +4,11 @@ module Mock
   module Twilio
     module Generator
       def phone_number_generator
-        "+1" + rand(100000000..999999999).to_s
+        "+1" + rand(1000000000..9999999999).to_s
+      end
+
+      def friendly_number_generator
+        "(#{rand(100..999)}) #{rand(100..999)}-#{rand(1000..9999)}"
       end
 
       def random_phone_number_sid
@@ -35,7 +39,20 @@ module Mock
         random_sid_prefixed_by "RA"
       end
 
+      def random_longitude
+        rand(MIN_LONGITUDE..MAX_LONGITUDE)
+      end
+
+      def random_latitude
+        rand(MIN_LATITUDE..MAX_LATITUDE)
+      end
+
       private
+
+      MIN_LATITUDE = -90.0
+      MAX_LATITUDE = 90.0
+      MIN_LONGITUDE = -180.0
+      MAX_LONGITUDE = 180.0
 
       def random_sid_prefixed_by(prefix)
         "#{prefix}#{SecureRandom.hex(16)}"

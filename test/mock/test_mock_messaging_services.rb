@@ -64,7 +64,7 @@ class Mock::TestTwilio < Minitest::Test
     assert_equal "PN", response.sid[0,2]
     assert_equal "AC", response.account_sid[0,2]
     assert_equal "MG", response.service_sid[0,2]
-    assert_equal 11, response.phone_number.length
+    assert_equal 12, response.phone_number.length
   end
 
   def test_mock_client_messaging_services_phone_numbers_fetch
@@ -92,6 +92,6 @@ class Mock::TestTwilio < Minitest::Test
     assert_equal "PN", response.sid[0,2]
     assert_equal "AC", response.account_sid[0,2]
     assert_equal "MG", response.service_sid[0,2]
-    assert_equal 11, response.phone_number.length
+    assert_equal 12, response.phone_number.length
   end
 end
