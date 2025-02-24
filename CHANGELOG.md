@@ -1,3 +1,6 @@
+## [1.5.1] - 2025-02-24
+- Fix Scheduler performance
+
 ## [1.5.0] - 2024-12-06
 - Support AvailablePhoneNumbersLocal
 
