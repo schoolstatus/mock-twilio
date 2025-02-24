@@ -4,6 +4,8 @@ module Mock
   module Twilio
     module Schemas
       class BrandsRegistrationsA2p
+        @@scheduler = Rufus::Scheduler.new
+
         class << self
           def for(body, request)
             body["date_updated"] = Time.current.rfc2822 if body["date_updated"]
@@ -32,8 +34,7 @@ module Mock
           def brand_sid(body)
             prefix = "BN"
             sid = prefix + SecureRandom.hex(16)
-            scheduler = Rufus::Scheduler.new
-            scheduler.in '2s' do
+            @@scheduler.in '2s' do
               response = Mock::Twilio::Webhooks::Brands.trigger(sid, "unverified")
               response = if response.status == 200
                            Mock::Twilio::Webhooks::Brands.trigger(sid, "verified")

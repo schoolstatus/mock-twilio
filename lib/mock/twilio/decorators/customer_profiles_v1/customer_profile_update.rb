@@ -5,6 +5,8 @@ module Mock
     module Decorators
       module CustomerProfilesV1
         class CustomerProfileUpdate
+         @@scheduler = Rufus::Scheduler.new
+
           class << self
             def decorate(body, request)
               body["date_updated"] = Time.current.rfc2822 if body["date_updated"]
@@ -21,8 +23,7 @@ module Mock
             def parse_customer_profile_sid(body, request)
               uri = URI(request.url)
               customer_profile_sid = uri.path.split('/')[3].split('.').first
-              scheduler = Rufus::Scheduler.new
-              scheduler.in '2s' do
+              @@scheduler.in '2s' do
                 begin
                   response = Mock::Twilio::Webhooks::CustomerProfiles.trigger(customer_profile_sid, "in-review")
 
