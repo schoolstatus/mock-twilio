@@ -5,6 +5,8 @@ module Mock
     module Decorators
       module Api2010
         class Calls
+          @@scheduler = Rufus::Scheduler.new
+
           class << self
             def decorate(body, request)
               body["date_updated"] = Time.current.rfc2822 if body["date_updated"]
@@ -26,8 +28,7 @@ module Mock
             def call_sid(body, request)
               prefix = "CA"
               sid = prefix + SecureRandom.hex(16)
-              scheduler = Rufus::Scheduler.new
-              scheduler.in '2s' do
+              @@scheduler.in '2s' do
                 conference_uuid = request.data["Url"].split("conference_uuid=").last
                 begin
                   response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'unknown', 'ringing')
