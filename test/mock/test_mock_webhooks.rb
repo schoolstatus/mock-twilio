@@ -94,4 +94,29 @@ class Mock::TestTwilio < Minitest::Test
     assert_equal "Ivv/g+EGMwuhN8+3PpwlsS+A1eg=", response.env.request_headers['X-twilio-signature']
     assert_equal expected_body, response.env.request_body
   end
+
+  def test_mock_webhook_message_status_url_trigger
+    Mock::Twilio.configure do |config|
+      config.webhook_message_status_url = "http://shunkan_ido/api/v1/twilio_requests/webhook_message_updates"
+    end
+
+    stub_request(:post, "http://shunkan_ido/api/v1/twilio_requests/webhook_message_updates").
+      with(body: {"MessageSid"=>"SIDTESTING", "MessageStatus"=>"delivered"}).
+      to_return(status: 200, body: "", headers: {})
+
+    response = Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING", nil)
+
+    assert_equal "forwarded_host.app", response.env.request_headers['Host']
+    assert_equal "http", response.env.request_headers['X-forwarded-proto']
+    assert_equal "fSX0swfxH1zw3AxBsY8hFGSlQR4=", response.env.request_headers['X-twilio-signature']
+    assert_equal "MessageSid=SIDTESTING&MessageStatus=delivered", response.env.request_body
+
+    Mock::Twilio.configure do |config|
+      config.webhook_message_status_url = nil
+    end
+  end
+
+  def test_mock_webhook_message_urls_trigger_error
+    assert_raises("There is not webhook_message_status_url or status_callback") { Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING", nil) }
+  end
 end
