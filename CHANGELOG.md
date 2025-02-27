@@ -1,3 +1,7 @@
+## [1.6] - 2025-02-27
+- Support webhook_client host with and without port
+- Support custom webhook message update url
+
 ## [1.5.1] - 2025-02-24
 - Fix Scheduler performance
 
