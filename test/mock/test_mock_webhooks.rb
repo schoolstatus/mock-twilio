@@ -104,7 +104,7 @@ class Mock::TestTwilio < Minitest::Test
       with(body: {"MessageSid"=>"SIDTESTING", "MessageStatus"=>"delivered"}).
       to_return(status: 200, body: "", headers: {})
 
-    response = Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING", "http://test.com/callback_url")
+    response = Mock::Twilio::Webhooks::Messages.trigger("SIDTESTING", nil)
 
     assert_equal "forwarded_host.app", response.env.request_headers['Host']
     assert_equal "http", response.env.request_headers['X-forwarded-proto']

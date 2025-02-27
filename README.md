@@ -67,15 +67,30 @@ OR
 ## How to use
 Initializer sample
 ```ruby
+# Local Docker/Host
 Mock::Twilio.configure do |config|
-  config.host = "http://shunkan-ido-service"
-  config.forwarded_host = "shunkan-ido-service"
+  config.host = "http://shunkan-ido-service:3000"
+  config.forwarded_host = "shunkan-ido-service:3000"
   config.port = "3000"
   config.proto = "http"
-  # optional
-  # webhook_message_status_url has preference over status_callback
-  # webhook_message_status_url supports twilio signature validation
-  # config.webhook_message_status_url = "http://shunkan_ido/api/v1/twilio_requests/webhook_message_updates"
+  # optional https://www.twilio.com/docs/messaging/api/message-resource#request-body-parameters
+  # Use webhook_message_status_url as the Integration Send webhook from Messaging Service.
+  # If you include status_callback parameter with the messaging_service_sid,
+  # Twilio uses status_callback URL instead of the Status Callback URL(webhook_message_status_url) of the Messaging Service.
+  # config.webhook_message_status_url = "http://shunkan_ido:3000/api/v1/twilio_requests/webhook_message_updates"
+end
+
+# Real http(s) url
+Mock::Twilio.configure do |config|
+  config.host = "https://my-server"
+  config.forwarded_host = "my-server"
+  config.port = "443"
+  config.proto = "https"
+  # optional https://www.twilio.com/docs/messaging/api/message-resource#request-body-parameters
+  # Use webhook_message_status_url as the Integration Send webhook from Messaging Service.
+  # If you include status_callback parameter with the messaging_service_sid,
+  # Twilio uses status_callback URL instead of the Status Callback URL(webhook_message_status_url) of the Messaging Service.
+  # config.webhook_message_status_url = "https://my-server/api/v1/twilio_requests/webhook_message_updates"
 end
 ```
 
