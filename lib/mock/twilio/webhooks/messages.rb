@@ -8,8 +8,15 @@ module Mock
           # Wait simulation from twilio
           sleep DELAY.sample
 
-          request_url = callback_url
-          url = callback_url.split(Mock::Twilio.host).last
+          if Mock::Twilio.webhook_message_status_url
+            request_url = Mock::Twilio.webhook_message_status_url
+            url = Mock::Twilio.webhook_message_status_url.split(Mock::Twilio.host).last
+          elsif callback_url
+            request_url = callback_url
+            url = callback_url.split(Mock::Twilio.host).last
+          else
+            raise "There is not webhook_message_status_url or status_callback"
+          end
 
           data = { :MessageSid=>sid, :MessageStatus=>"delivered" }
 

@@ -72,6 +72,10 @@ Mock::Twilio.configure do |config|
   config.forwarded_host = "shunkan-ido-service"
   config.port = "3000"
   config.proto = "http"
+  # optional
+  # webhook_message_status_url has preference over status_callback
+  # webhook_message_status_url supports twilio signature validation
+  # config.webhook_message_status_url = "http://shunkan_ido/api/v1/twilio_requests/webhook_message_updates"
 end
 ```
 

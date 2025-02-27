@@ -4,7 +4,7 @@ module Mock
   module Twilio
     module Util
       class Configuration
-        attr_accessor :host, :forwarded_host, :port, :proto
+        attr_accessor :host, :forwarded_host, :port, :proto, :webhook_message_status_url
 
         def host=(value)
           @host = value
@@ -20,6 +20,10 @@ module Mock
 
         def proto=(value)
           @proto = value
+        end
+
+        def webhook_message_status_url=(value)
+          @webhook_message_status_url = value
         end
       end
     end

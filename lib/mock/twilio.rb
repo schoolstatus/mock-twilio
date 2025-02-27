@@ -28,7 +28,7 @@ module Mock
   module Twilio
     extend SingleForwardable
 
-    def_delegators :configuration, :host, :forwarded_host, :port, :proto
+    def_delegators :configuration, :host, :forwarded_host, :port, :proto, :webhook_message_status_url
 
     def self.configure(&block)
       yield configuration
