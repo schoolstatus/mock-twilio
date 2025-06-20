@@ -83,8 +83,7 @@ class Mock::TestTwilio < Minitest::Test
       with(body: {"AccountSid"=>"ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "AddOns"=>"{\"status\":\"successful\",\"message\":null,\"code\":null,\"results\":{}}", "ApiVersion"=>"2010-04-01", "Body"=>"Inbound::Message mock reply", "From"=>"+1987654321", "FromCity"=>"SILVERDALE", "FromCountry"=>"US", "FromState"=>"WA", "FromZip"=>"98315", "MessageSid"=>"SIDTESTING", "MessagingServiceSid"=>"MFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFff", "NumMedia"=>"0", "NumSegments"=>"1", "SmsMessageSid"=>"SIDTESTING", "SmsSid"=>"SIDTESTING", "SmsStatus"=>"received", "To"=>"+1123456789", "ToCity"=>"SARDIS", "ToCountry"=>"US", "ToState"=>"MS", "ToZip"=>"38666"}).
       to_return(status: 200, body: "", headers: {})
 
-    request = Struct.new(:To, :From, :MessagingServiceSid)
-    request_data = request.new(To: "+1123456789", From: "+1987654321", MessagingServiceSid: "MFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFff")
+    request_data = { "To" => "+1123456789", "From" => "+1987654321", "MessagingServiceSid" => "MFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFff" }
     response = Mock::Twilio::Webhooks::InboundMessages.trigger("SIDTESTING", request_data )
 
     expected_body = "AccountSid=ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF&AddOns=%7B%22status%22%3A%22successful%22%2C%22message%22%3Anull%2C%22code%22%3Anull%2C%22results%22%3A%7B%7D%7D&ApiVersion=2010-04-01&Body=Inbound%3A%3AMessage+mock+reply&From=%2B1987654321&FromCity=SILVERDALE&FromCountry=US&FromState=WA&FromZip=98315&MessageSid=SIDTESTING&MessagingServiceSid=MFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFff&NumMedia=0&NumSegments=1&SmsMessageSid=SIDTESTING&SmsSid=SIDTESTING&SmsStatus=received&To=%2B1123456789&ToCity=SARDIS&ToCountry=US&ToState=MS&ToZip=38666"
