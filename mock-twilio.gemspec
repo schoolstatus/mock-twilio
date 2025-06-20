@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency "faraday", ">= 2.8.1"
+  spec.add_dependency "faraday", "<= 2.8.0"
   spec.add_dependency "rufus-scheduler", ">= 3.9.1"
   spec.add_dependency "twilio-ruby", ">= 7.0.0"
   spec.add_dependency "activesupport", ">= 6.0.0"
