@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description = "This repository contains Mock::Twilio::Client for Twilio's API."
   spec.homepage = "https://github.com/schoolstatus/mock-twilio"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 2.7.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/schoolstatus/mock-twilio"
@@ -28,11 +28,12 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency "faraday", ">= 2.9.1"
+  spec.add_dependency "faraday", "<= 2.8.0"
   spec.add_dependency "rufus-scheduler", ">= 3.9.1"
   spec.add_dependency "twilio-ruby", ">= 7.0.0"
   spec.add_dependency "activesupport", ">= 6.0.0"
-  spec.add_dependency "rack", ">= 3.1.8"
+  spec.add_dependency "rack", ">= 1.5"
+  spec.add_dependency "securerandom", ">= 0.2.2"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
