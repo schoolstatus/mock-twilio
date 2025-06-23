@@ -1,3 +1,6 @@
+## [1.6] - 2025-06-23
+- Actually support ruby 2.7
+
 ## [1.6] - 2025-02-27
 - Support webhook_client host with and without port
 - Support custom webhook message update url
