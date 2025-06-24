@@ -29,22 +29,24 @@ module Mock
               prefix = "CA"
               sid = prefix + SecureRandom.hex(16)
               @@scheduler.in '2s' do
-                conference_uuid = request.data["Url"].split("conference_uuid=").last
+                # https://www.twilio.com/docs/voice/api/call-resource#create-a-call-resource
+                # The absolute URL that returns the TwiML instructions for the call
+                conference_uuid = request.data["Url"].split("conference_uuid=").last if request.data["Url"]
+                twiml_action = conference_uuid ? "conference" : "call"
+
+                status_callback = request.data["StatusCallback"] if request.data["StatusCallback"]
+
+                case twiml_action
+                when "conference"
+                  twiml = request.data["Url"]
+                  service = ConferenceCallService.new(sid, twiml, status_callback, body)
+                when "call"
+                  twiml_url = request.data["TwiML"]
+                  service = CallService.new(sid, status_callback, body)
+                end
+
                 begin
-                  response = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'unknown', 'ringing')
-
-                  conference_response = if response.success?
-                                          twiMl_xml = Nokogiri::XML response.body
-                                          friendly_name = twiMl_xml.at_xpath('//Dial').at_xpath('//Conference').children.text
-                                          Mock::Twilio::Webhooks::Conferences.trigger(friendly_name)
-                                        end
-
-                  # Participant
-                  participant_ringing   = Mock::Twilio::Webhooks::Calls.trigger(sid, 'ringing') if conference_response.success?
-                  participant_completed = Mock::Twilio::Webhooks::Calls.trigger(sid, 'completed') if participant_ringing.success?
-
-                  call_completed = Mock::Twilio::Webhooks::CallStatusUpdates.trigger(sid, conference_uuid, 'human', 'completed') if participant_completed.success?
-                  Mock::Twilio::Webhooks::Voicemail.trigger(sid) if call_completed.success? && [true,false].sample
+                  service.call
                 rescue  => e
                   puts e
                 end
