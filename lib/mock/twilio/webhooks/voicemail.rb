@@ -42,7 +42,7 @@ module Mock
             :RecordingChannels=> "1",
             :ErrorCode=> "0",
             :CallSid=> call_sid,
-            :RecordingStartTime=> Time.current.rfc2822,
+            :RecordingStartTime=> "Wed, 25 Jun 2025 18:27:04 -0600",
             :AccountSid=> twilio_client.account_sid,
             :RecordingDuration=> "4"
           }

@@ -89,8 +89,6 @@ class Mock::TestTwilio < Minitest::Test
     response = service.call
 
     assert_equal true, response.success?
-
-    #assert_includes response.env.request_body, "completed"
+    assert_includes response.env.request_body, "completed"
   end
 end
-
