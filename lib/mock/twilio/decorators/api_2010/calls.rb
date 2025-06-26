@@ -39,10 +39,12 @@ module Mock
                 case twiml_action
                 when "conference"
                   twiml = request.data["Url"]
-                  service = ConferenceCallService.new(sid, twiml, status_callback, body)
+                  service = Mock::Twilio::Services::ConferenceCallService.new(sid, twiml, status_callback, body)
                 when "call"
-                  twiml_url = request.data["TwiML"]
-                  service = CallService.new(sid, status_callback, body)
+                  #twiml = request.data["TwiML"]
+                  # Twilio::TwiML::VoiceResponse.new.play("https://api.twilio.com/cowbell.mp3")
+                  # Current use case there is no need to use TwiML
+                  service = Mock::Twilio::Services::CallService.new(sid, status_callback, body)
                 end
 
                 begin

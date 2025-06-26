@@ -45,25 +45,28 @@ class Mock::TestTwilio < Minitest::Test
       with(body: {"AccountSid"=>"ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "ApiVersion"=>"2010-04-01", "CallDuration"=>"0", "CallSid"=>"SIDTESTING", "CallStatus"=>"ringing", "CallbackSource"=>"call-progress-events", "Called"=>"+18222222222", "CalledCity"=>"TAMPA", "CalledCountry"=>"US", "CalledState"=>"FL", "CalledZip"=>"33605", "Caller"=>"+18111111111", "CallerCity"=>"no value", "CallerCountry"=>"US", "CallerState"=>"CA", "CallerZip"=>"no value", "Direction"=>"outbound-api", "Duration"=>"0", "From"=>"+18111111111", "FromCity"=>"no value", "FromCountry"=>"US", "FromState"=>"CA", "FromZip"=>"no value", "SequenceNumber"=>"2", "SipResponseCode"=>"487", "Timestamp"=>"2024-06-17 16:49:31 UTC", "To"=>"+18222222222", "ToCity"=>"TAMPA", "ToCountry"=>"US", "ToState"=>"FL", "ToZip"=>"33605"}).
       to_return(status: 200, body: "", headers: {})
 
-    response = Mock::Twilio::Webhooks::Calls.trigger("SIDTESTING", "ringing")
+    status_callback = "http://shunkan-ido-service/api/v1/twilio_calls/participant_status_changes"
+    body = { "from" => "+18111111111", "to" => "+18222222222" }
+    response = Mock::Twilio::Webhooks::Calls.trigger("SIDTESTING", status_callback, "ringing", body)
 
     assert_equal "forwarded_host.app", response.env.request_headers['Host']
     assert_equal "http", response.env.request_headers['X-forwarded-proto']
-    assert_equal "qkaaZdYzQG1Bt9X9dEghrNI/DnY=", response.env.request_headers['X-twilio-signature']
+    assert_equal "SQKQ+yNooNS5SNeTWzety1b3oRc=", response.env.request_headers['X-twilio-signature']
     assert response.env.request_body.include?("ringing")
   end
 
   def test_mock_webhook_calls_updates_trigger
-    stub_request(:post, "http://shunkan-ido-service:3000/api/v1/twilio_calls/voice_responses").
+    stub_request(:post, "http://shunkan-ido-service:3000/api/v1/twilio_calls/voice_responses?conference_uuid=c843e10f-142a-4c31-a1ca-dcf67233c7c8").
       with(body: {"AccountSid"=>"ACFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "AnsweredBy"=>"unknown", "ApiVersion"=>"2010-04-01", "CallDuration"=>"0", "CallSid"=>"SIDTESTING", "CallStatus"=>"ringing", "CallbackSource"=>"call-progress-events", "Called"=>"+18222222222", "CalledCity"=>"TAMPA", "CalledCountry"=>"US", "CalledState"=>"FL", "CalledZip"=>"33605", "Caller"=>"+18111111111", "CallerCity"=>"no value", "CallerCountry"=>"US", "CallerState"=>"CA", "CallerZip"=>"no value", "Direction"=>"outbound-api", "Duration"=>"0", "From"=>"+18111111111", "FromCity"=>"no value", "FromCountry"=>"US", "FromState"=>"CA", "FromZip"=>"no value", "SequenceNumber"=>"2", "SipResponseCode"=>"487", "StirStatus"=>"B", "StirVerstat"=>"TN-Validation-Passed-B", "Timestamp"=>"2024-06-17 16:49:31 UTC", "To"=>"+18222222222", "ToCity"=>"TAMPA", "ToCountry"=>"US", "ToState"=>"FL", "ToZip"=>"33605"}).
       to_return(status: 200, body: "", headers: {})
 
-
-    response = Mock::Twilio::Webhooks::Twiml.trigger("SIDTESTING", "unknown", "ringing")
+    twiml = "http://shunkan-ido-service/api/v1/twilio_calls/voice_responses?conference_uuid=c843e10f-142a-4c31-a1ca-dcf67233c7c8"
+    body = { "from" => "+18111111111", "to" => "+18222222222" }
+    response = Mock::Twilio::Webhooks::Twiml.trigger("SIDTESTING", twiml, "unknown", "ringing", body)
 
     assert_equal "forwarded_host.app", response.env.request_headers['Host']
     assert_equal "http", response.env.request_headers['X-forwarded-proto']
-    assert_equal "L234WHmiJjZqxCJGLWCagRl3QOo=", response.env.request_headers['X-twilio-signature']
+    assert_equal "R+p1ei+IUFBtoxlPzz47O9NrH2Q=", response.env.request_headers['X-twilio-signature']
   end
 
   def test_mock_webhook_customer_profile_trigger

@@ -4,22 +4,21 @@ module Mock
   module Twilio
     module Webhooks
       class Twiml < Base
-        URL = "/api/v1/twilio_calls/voice_responses"
-
-        def self.trigger(sid, answered_by, call_status)
+        def self.trigger(sid, twiml, answered_by, call_status, body)
           # Wait simulation from twilio
           sleep DELAY.sample
 
-          request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
+          request_url = twiml
+          url = twiml.split(Mock::Twilio.host).last
 
-          data = call_status_updates_data(sid, answered_by, call_status)
+          data = call_status_updates_data(sid, answered_by, call_status, body)
 
           signature = build_signature_for_request(request_url, data)
 
           response = webhook_client.request(Mock::Twilio.host,
                                             Mock::Twilio.port,
                                             'POST',
-                                            URL,
+                                            url,
                                             nil,
                                             data,
                                             headers.merge!({ 'X-Twilio-Signature': signature }),
@@ -33,7 +32,7 @@ module Mock
           end
         end
 
-        def self.call_status_updates_data(sid, answered_by, call_status)
+        def self.call_status_updates_data(sid, answered_by, call_status, body)
           {
             :AccountSid=> twilio_client.account_sid,
             :ApiVersion=>	"2010-04-01",
@@ -53,7 +52,7 @@ module Mock
             :CallStatus=> call_status,
             :Direction=> "outbound-api",
             :Duration=> "0",
-            :From=>	"+18111111111",
+            :From=>	body["from"],
             :FromCity=> "no value",
             :FromCountry=> "US",
             :FromState=> "CA",
@@ -61,7 +60,7 @@ module Mock
             :SequenceNumber=> "2",
             :SipResponseCode=> "487",
             :Timestamp=> "2024-06-17 16:49:31 UTC",
-            :To=>	"+18222222222",
+            :To=>	body["to"],
             :ToCity=> "TAMPA",
             :ToCountry=> "US",
             :ToState=> "FL",

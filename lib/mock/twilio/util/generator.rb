@@ -39,6 +39,14 @@ module Mock
         random_sid_prefixed_by "RA"
       end
 
+      def random_conference_sid
+        random_sid_prefixed_by "CF"
+      end
+
+      def random_voicemail_sid
+        random_sid_prefixed_by "RE"
+      end
+
       def random_longitude
         rand(MIN_LONGITUDE..MAX_LONGITUDE)
       end

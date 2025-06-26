@@ -4,16 +4,18 @@ module Mock
   module Twilio
     module Services
       class CallService
-        attr_reader :sid, :status_callback
+        attr_reader :sid, :status_callback, :body
 
-        def initialize(sid, status_callback)
+        def initialize(sid, status_callback, body)
           @sid = sid
           @status_callback = status_callback
+          @body = body
         end
 
         def call
-          response  = Mock::Twilio::Webhooks::Calls.trigger(sid, 'ringing') if conference_response.success?
-          Mock::Twilio::Webhooks::Calls.trigger(sid, 'completed') if response.success?
+          response  = Mock::Twilio::Webhooks::Calls.trigger(sid, status_callback, 'ringing', body)
+
+          Mock::Twilio::Webhooks::Calls.trigger(sid, status_callback, 'completed', body) if response.success?
         end
       end
     end
