@@ -6,13 +6,13 @@ module Mock
       class Conferences < Base
         URL = "/api/v1/twilio_calls/conference_status_changes"
 
-        def self.trigger(friendly_name)
+        def self.trigger(friendly_name, sid)
           # Wait simulation from twilio
           sleep DELAY.sample
 
           request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
 
-          data = conference_data(friendly_name)
+          data = conference_data(friendly_name, sid)
 
           signature = build_signature_for_request(request_url, data)
 
@@ -34,9 +34,8 @@ module Mock
           end
         end
 
-        def self.conference_data(friendly_name)
+        def self.conference_data(friendly_name, sid)
           prefix = "CF"
-          sid = prefix + SecureRandom.hex(16)
           {
            :FriendlyName=> friendly_name,
            :SequenceNumber=> "6",

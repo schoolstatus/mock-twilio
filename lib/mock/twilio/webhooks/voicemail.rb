@@ -6,13 +6,13 @@ module Mock
       class Voicemail < Base
         URL = "/api/v1/twilio_calls/create_voicemail"
 
-        def self.trigger(call_sid)
+        def self.trigger(call_sid, rec_sid)
           # Wait simulation from twilio
           sleep DELAY.sample
 
           request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
 
-          data = voicemail_data(call_sid)
+          data = voicemail_data(call_sid, rec_sid)
 
           signature = build_signature_for_request(request_url, data)
 
@@ -33,18 +33,16 @@ module Mock
           end
         end
 
-        def self.voicemail_data(call_sid)
-          prefix = "RE"
-          recording_sid = prefix + SecureRandom.hex(16)
+        def self.voicemail_data(call_sid, rec_sid)
           {
             :RecordingSource=> "RecordVerb",
-            :RecordingSid=> recording_sid,
+            :RecordingSid=> rec_sid,
             :RecordingUrl=> "https://cdn.pixabay.com/download/audio/2022/03/24/audio_4ff823c44c.mp3?filename=ding-101492.mp3",
             :RecordingStatus=> "completed",
             :RecordingChannels=> "1",
             :ErrorCode=> "0",
             :CallSid=> call_sid,
-            :RecordingStartTime=> Time.current.rfc2822,
+            :RecordingStartTime=> "Wed, 25 Jun 2025 18:27:04 -0600",
             :AccountSid=> twilio_client.account_sid,
             :RecordingDuration=> "4"
           }

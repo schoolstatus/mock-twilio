@@ -6,20 +6,21 @@ module Mock
       class Calls < Base
         URL = "/api/v1/twilio_calls/participant_status_changes"
 
-        def self.trigger(sid, participant_status)
+        def self.trigger(sid, status_callback, call_status, body)
           # Wait simulation from twilio
           sleep DELAY.sample
 
-          request_url = Mock::Twilio.proto + "://" + Mock::Twilio.forwarded_host + URL
+          request_url = status_callback
+          url = status_callback.split(Mock::Twilio.host).last
 
-          data = call_data(sid, participant_status)
+          data = call_data(sid, call_status)
 
           signature = build_signature_for_request(request_url, data)
 
           response = webhook_client.request(Mock::Twilio.host,
                                             Mock::Twilio.port,
                                             'POST',
-                                            URL,
+                                            url,
                                             nil,
                                             data,
                                             headers.merge!({ 'X-Twilio-Signature': signature }),
@@ -33,7 +34,7 @@ module Mock
           end
         end
 
-        def self.call_data(sid, participant_status)
+        def self.call_data(sid, call_status)
           {
             :AccountSid=> twilio_client.account_sid,
             :ApiVersion=>	"2010-04-01",
@@ -50,7 +51,7 @@ module Mock
             :CallerState=> "CA",
             :CallerZip=> "no value",
             :CallSid=> sid,
-            :CallStatus=> participant_status,
+            :CallStatus=> call_status,
             :Direction=> "outbound-api",
             :Duration=> "0",
             :From=>	"+18111111111",
